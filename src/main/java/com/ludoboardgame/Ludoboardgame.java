@@ -63,9 +63,9 @@ public class Ludoboardgame extends Application {
     private Button but0 = new Button("Start Game");
     private Button but1 = new Button("Podaj imiona graczy");
 
-
     private final Dice dice = new Dice();
     private PlayersQuantity quantity = new PlayersQuantity();
+    private Configuration configuration = new Configuration();
 
     public void drawWelcomeItems(Pane leftPane, Pane downPane, Pane rightPane) {
         imgPawnBlue1.relocate(45, 0);
@@ -96,7 +96,6 @@ public class Ludoboardgame extends Application {
     }
 
 
-
     public void drawPlayersQuantity(Pane pane) {
 
         pane.getChildren().removeAll(label0, but0);
@@ -106,47 +105,132 @@ public class Ludoboardgame extends Application {
         newbtn1.relocate(410, 140);
         newbtn1.setOnAction((e) -> {
             quantity.setQuantityOfPlayers(2);
-            //drawUserNameBtn(pane);
             pane.getChildren().removeAll(label1, newbtn1, newbtn2, newbtn3);
             System.out.println(quantity.getQuantityOfPlayers());
+            setPlayersName(pane);
+            configuration.setEtap(1);
         });
 
         newbtn2.relocate(440, 140);
         newbtn2.setOnAction((e) -> {
             quantity.setQuantityOfPlayers(3);
-            //drawUserNameBtn(pane);
             pane.getChildren().removeAll(label1, newbtn1, newbtn2, newbtn3);
             System.out.println(quantity.getQuantityOfPlayers());
+            setPlayersName(pane);
+            configuration.setEtap(1);
         });
 
         newbtn3.relocate(470, 140);
         newbtn3.setOnAction((e) -> {
             quantity.setQuantityOfPlayers(4);
-            //drawUserNameBtn(pane);
             pane.getChildren().removeAll(label1, newbtn1, newbtn2, newbtn3);
             System.out.println(quantity.getQuantityOfPlayers());
-            //setPlayersName(pane);
+            setPlayersName(pane);
+            configuration.setEtap(1);
+
         });
         pane.getChildren().addAll(label1, newbtn1, newbtn2, newbtn3);
     }
-    public void drawBtn(Pane pane) {
-        but1.setPrefWidth(100);
-        but1.relocate(645, 185);
-        but1.setText("Next >");
-        pane.getChildren().add(but1);
-    }
 
-    public void setPlayersName(Pane downPane){
-        for(int j=0;j<quantity.getQuantityOfPlayers();j++){
-            label0.setText("Podaj imię gracza nr "+(j+1));
+
+    public void setPlayersName(Pane downPane) {
+
+        if (quantity.getQuantityOfPlayers() == 2) {
+            label0.setText("Podaj imię gracza z żółtymi pionkami ");
+            label0.relocate(200, 110);
+            label1.setText("Podaj imię gracza z niebieskimi pionkami ");
+            label1.relocate(200, 140);
             // Tworzymy TextField
             TextField nameTextField = new TextField();
-            // Ustawiamy minimalną szerokość pola tekstowego
-            nameTextField.setMinWidth(200);
-            // Dodajemy Label i TextField do HBox-u
-            downPane.getChildren().addAll(label0,nameTextField);
-            drawBtn(downPane);
+            nameTextField.relocate(425, 105);
+            nameTextField.setMinWidth(150);
+            TextField nameTextField1 = new TextField();
+            nameTextField1.relocate(425, 135);
+            nameTextField1.setMinWidth(150);
+            // Dodajemy Label i TextField
+            downPane.getChildren().addAll(label0, label1, nameTextField, nameTextField1);
 
+            but1.setPrefWidth(70);
+            but1.relocate(600, 135);
+            but1.setText("Next >");
+            downPane.getChildren().add(but1);
+            but1.setOnAction((e) -> {
+                downPane.getChildren().removeAll(label0, label1, nameTextField, nameTextField1, but1);
+                configuration.player1.setPlayerName(nameTextField.getText());
+                configuration.player2.setPlayerName(nameTextField1.getText());
+                System.out.println(configuration.player1.getPlayerName());
+                //następna metoda
+            });
+        }
+        if (quantity.getQuantityOfPlayers() == 3) {
+            label0.setText("Podaj imiona graczy: ");
+            label0.relocate(100, 130);
+            ImageView imgYellow = new ImageView(pawnPurple);
+            ImageView imgBlue = new ImageView(pawnBlue);
+            ImageView imgRed = new ImageView(pawnRed);
+            imgYellow.relocate(240, 90);
+            imgBlue.relocate(480, 90);
+            imgRed.relocate(240, 140);
+            TextField nameTextFieldY = new TextField();
+            nameTextFieldY.relocate(290, 105);
+            nameTextFieldY.setMinWidth(150);
+            TextField nameTextFieldB = new TextField();
+            nameTextFieldB.relocate(530, 105);
+            nameTextFieldB.setMinWidth(150);
+            TextField nameTextFieldR = new TextField();
+            nameTextFieldR.relocate(290, 150);
+            nameTextFieldR.setMinWidth(150);
+            downPane.getChildren().addAll(label0,imgYellow,nameTextFieldY,imgBlue,nameTextFieldB,imgRed,nameTextFieldR);
+
+            but1.setPrefWidth(70);
+            but1.relocate(715, 150);
+            but1.setText("Next >");
+            downPane.getChildren().add(but1);
+            but1.setOnAction((e) -> {
+                downPane.getChildren().removeAll(label0,imgYellow,nameTextFieldY,imgBlue,nameTextFieldB,imgRed,nameTextFieldR, but1);
+                configuration.player1.setPlayerName(nameTextFieldY.getText());
+                configuration.player2.setPlayerName(nameTextFieldB.getText());
+                configuration.player3.setPlayerName(nameTextFieldR.getText());
+                //następna metoda
+            });
+        }
+        if (quantity.getQuantityOfPlayers() == 4) {
+            label0.setText("Podaj imiona graczy: ");
+            label0.relocate(100, 130);
+            ImageView imgYellow = new ImageView(pawnPurple);
+            ImageView imgBlue = new ImageView(pawnBlue);
+            ImageView imgRed = new ImageView(pawnRed);
+            ImageView imgGreen = new ImageView(pawnGreen);
+            imgYellow.relocate(240, 90);
+            imgBlue.relocate(480, 90);
+            imgRed.relocate(240, 140);
+            imgGreen.relocate(480, 140);
+            TextField nameTextFieldY = new TextField();
+            nameTextFieldY.relocate(290, 105);
+            nameTextFieldY.setMinWidth(150);
+            TextField nameTextFieldB = new TextField();
+            nameTextFieldB.relocate(530, 105);
+            nameTextFieldB.setMinWidth(150);
+            TextField nameTextFieldR = new TextField();
+            nameTextFieldR.relocate(290, 150);
+            nameTextFieldR.setMinWidth(150);
+            TextField nameTextFieldG = new TextField();
+            nameTextFieldG.relocate(530, 150);
+            nameTextFieldG.setMinWidth(150);
+            downPane.getChildren().addAll(label0,imgYellow,nameTextFieldY,imgBlue,nameTextFieldB,imgRed,nameTextFieldR,imgGreen,nameTextFieldG);
+
+            but1.setPrefWidth(70);
+            but1.relocate(715, 150);
+            but1.setText("Next >");
+            downPane.getChildren().add(but1);
+            but1.setOnAction((e) -> {
+                downPane.getChildren().removeAll(label0,imgYellow,nameTextFieldY,imgBlue,nameTextFieldB,imgRed,nameTextFieldR,imgGreen,nameTextFieldG, but1);
+                configuration.player1.setPlayerName(nameTextFieldY.getText());
+                configuration.player2.setPlayerName(nameTextFieldB.getText());
+                configuration.player3.setPlayerName(nameTextFieldR.getText());
+                configuration.player4.setPlayerName(nameTextFieldG.getText());
+                //następna metoda
+            });
         }
     }
 
@@ -177,9 +261,7 @@ public class Ludoboardgame extends Application {
             imgDiceValue6.relocate(160, 110);
             pane.getChildren().add(imgDiceValue6);
         }
-
     }
-
 
     public static void main(String[] args) {
         launch(args);
@@ -235,6 +317,20 @@ public class Ludoboardgame extends Application {
 
         //widok powitalny
         drawWelcomeItems(left, down, right);
+        System.out.println("etap " + configuration.getEtap());
+        if (configuration.getEtap() == 1) {
+            Button but1 = new Button("Dice throw");
+            but1.setPrefWidth(100);
+            but1.relocate(645, 115);
+
+            ImageView imgKubekBefore = new ImageView(kubekBefore);
+            imgKubekBefore.relocate(45, 80);
+            down.getChildren().addAll(but1, imgKubekBefore);
+            but1.setOnAction((e) -> {   //akcja przycisku
+                dice.throwDice();
+                drawDiceAfterThrow(down);
+            });
+        }
 
 
 
