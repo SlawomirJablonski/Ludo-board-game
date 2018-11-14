@@ -17,4 +17,6 @@ public class Dice {
     public int getDiceResult() {
         return diceResult;
     }
+
+
 }

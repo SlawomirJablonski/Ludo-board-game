@@ -12,7 +12,7 @@ public class Pawn {
     private ImageView imgPawn = new ImageView(pawnImage);
     private Position currentPos;
 
-    public Pawn(int pawnIndex, /*Position homePosition,*/ Position startPosition, Image pawnImage, ImageView imgPawn, Position currentPos) {
+    public Pawn(int pawnIndex, Position homePosition, Position startPosition, Image pawnImage, ImageView imgPawn, Position currentPos) {
         this.pawnIndex = pawnIndex;
         this.homePosition = homePosition;
         this.startPosition = startPosition;
@@ -69,9 +69,7 @@ public class Pawn {
         this.currentPos = currentPos;
     }
 
-    public void drawPawnInNewPosition(GridPane grid,Position position){
 
-    }
     public void drawMove(Pawn pawn,Position position,GridPane gridPane){
 
         GridPane.setConstraints(pawn.getImgPawn(), position.getFx(), position.getFy());
