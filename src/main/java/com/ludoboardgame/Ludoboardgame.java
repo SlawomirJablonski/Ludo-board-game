@@ -271,7 +271,7 @@ public class Ludoboardgame extends Application {
         grid.getChildren().addAll(imgPawnGreen1, imgPawnGreen2, imgPawnGreen3, imgPawnGreen4);
     }
 
-    public void drawStartBtn(Pane pane) {
+   /* public void drawStartBtn(Pane pane) {
         Button but1 = new Button("Ludo Game Start");
         but1.relocate(645, 115);
         pane.getChildren().add(but1);
@@ -326,42 +326,44 @@ public class Ludoboardgame extends Application {
                 }while (dice.getDiceResult() != 6);
             }
         });
-    }
+    }*/
 
-    /*public void drawStartBtn(Pane pane) {
+    public void drawStartBtn(Pane pane) {
         Button but1 = new Button("Ludo Game Start");
-        Label playerLabel = new Label();
-        playerLabel.relocate(350, 120);
+        //Label playerLabel = new Label();
+        //playerLabel.relocate(350, 120);
         but1.relocate(645, 115);
-        pane.getChildren().addAll(but1, playerLabel);
+        pane.getChildren().add(but1);
         but1.setOnAction((e) -> {
+            pane.getChildren().remove(but1);
+            //but1.relocate(745, 115);//645
+            Label playerLabel2 = new Label();
+            playerLabel2.relocate(350, 120);
+
+            Button throwBtn = new Button("throw dice");
+            throwBtn.relocate(645, 115);
+
+            throwBtn.setOnAction((f) -> {
+                drawDiceAfterThrow(pane);
+                configuration.setDidntThrow(false);
+            });
+            pane.getChildren().addAll(throwBtn, playerLabel2);
             //akcja przycisku
             for (Player player : configuration.getPlayers()) {
-                do {
-                    configuration.setJ(0);
-                    configuration.setEtap(0);
+                playerLabel2.setText(player.getPlayerName() + " turn, please throw dice");
+                for (int g = 0; g < 3; g++) {
 
-                    playerLabel.setText(player.getPlayerName() + " turn, please throw dice");
-                    but1.setText("Dice throw");
-                    but1.setOnAction((f) -> {   //akcja przycisku
-                        drawDiceAfterThrow(pane);
-                        configuration.setJ(configuration.getJ() + 1);
-
-                        if (dice.getDiceResult() == 6) {
-                            configuration.setJ(3);
-                            GridPane.setConstraints(player.getPlayerPawn1().getImgPawn(), player.getPlayerPawn1().getStartPosition().getFx(), player.getPlayerPawn1().getStartPosition().getFy());
-                            configuration.setEtap(1);
-
-                        }//....
-
-                    });
-
-
-
-                } while (configuration.getEtap() == 0 || configuration.getJ() < 3);
+                    while (configuration.isDidntThrow()) ;// ..................
+                    configuration.setDidntThrow(true);//.................
+                    if (dice.getDiceResult() == 6) {
+                        //ustaw pionek
+                        GridPane.setConstraints(player.getPlayerPawn1().getImgPawn(), player.getPlayerPawn1().getStartPosition().getFx(), player.getPlayerPawn1().getStartPosition().getFy());
+                        break;
+                    }
+                }
             }
         });
-    }*/
+    }
 
 
     public void drawGameBeginning(Pane downPane, Pane pRight, Pane pLeft, GridPane grid) {

@@ -7,6 +7,7 @@ public class Configuration {
     private int etap = 0;
     private int j = 0;
     private boolean end = false;
+    private boolean didntThrow = true;
 
     private Image pawnPurple = new Image("pawnPurple2.png");
     private ImageView imgPawnPurple1 = new ImageView(pawnPurple);
@@ -58,6 +59,14 @@ public class Configuration {
         //players[2]=player3;
         //players[3]=player4;
         return players;
+    }
+
+    public boolean isDidntThrow() {
+        return didntThrow;
+    }
+
+    public void setDidntThrow(boolean didntThrow) {
+        this.didntThrow = didntThrow;
     }
 
     public boolean isEnd() {
