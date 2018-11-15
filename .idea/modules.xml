@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ExternalModuleListStorage">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ludo-board-game.iml" filepath="$PROJECT_DIR$/.idea/modules/ludo-board-game.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ludo-board-game_main.iml" filepath="$PROJECT_DIR$/.idea/modules/ludo-board-game_main.iml" group="ludo-board-game" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ludo-board-game_test.iml" filepath="$PROJECT_DIR$/.idea/modules/ludo-board-game_test.iml" group="ludo-board-game" />
+    </modules>
+  </component>
+</project>

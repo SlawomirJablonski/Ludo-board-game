@@ -58,7 +58,6 @@ public class Ludoboardgame extends Application {
     private ImageView imgKubekBefore = new ImageView(kubekBefore);
     private ImageView imgKubekAfter = new ImageView(kubekAfter);
 
-
     private Label label0 = new Label("Witaj w grze planszowej CHIŃCZYK !");
     private Label label1 = new Label("Podaj liczbę graczy");
     private Button newbtn1 = new Button("2");
@@ -68,8 +67,71 @@ public class Ludoboardgame extends Application {
     private Button but1 = new Button("Podaj imiona graczy");
 
     private Dice dice = new Dice();
-    private PlayersQuantity quantity = new PlayersQuantity();
     private Configuration configuration = new Configuration();
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+
+        primaryStage.getIcons().add(icon);
+        BackgroundSize backgroundSize = new BackgroundSize(100, 100, true, true, true, false);
+        BackgroundImage backgroundImage =
+                new BackgroundImage(imageback, BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT,
+                        BackgroundPosition.CENTER, backgroundSize);
+        Background background = new Background(backgroundImage);
+
+        BorderPane root = new BorderPane(); // Tworzymy rozkład.
+        root.setBackground(background);
+
+        //pane z siatka do centrum
+        GridPane grid = new GridPane();
+        grid.setGridLinesVisible(true);
+        final int numCols = 11;
+        final int numRows = 11;
+        for (int i = 0; i < numCols; i++) {
+            ColumnConstraints colConst = new ColumnConstraints();
+            colConst.setPercentWidth(100.0 / numCols);
+            grid.getColumnConstraints().add(colConst);
+        }
+        for (int i = 0; i < numRows; i++) {
+            RowConstraints rowConst = new RowConstraints();
+            rowConst.setPercentHeight(100.0 / numRows);
+            grid.getRowConstraints().add(rowConst);
+        }
+        root.setCenter(grid);
+
+        //ustaw margines górny na siatkę
+        StackPane up = new StackPane();
+        up.setPrefHeight(115);
+        root.setTop(up);
+
+        //ustaw prawy margines
+        Pane right = new Pane();
+        right.setPrefWidth(142);
+        root.setRight(right);
+
+        //ustaw spód
+        Pane down = new Pane();
+        down.setPrefHeight(190);
+        root.setBottom(down);
+
+        //ustaw lewy margines
+        Pane left = new Pane();
+        left.setPrefWidth(155);
+        root.setLeft(left);
+
+        //widok powitalny
+        drawWelcomeItems(left, down, right, grid);
+
+        Scene scene = new Scene(root, 800, 800, Color.BLACK);
+
+        primaryStage.setTitle("Ludo Board Game");
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
 
     public void drawWelcomeItems(Pane leftPane, Pane downPane, Pane rightPane, GridPane grid) {
         imgPawnBlue1.relocate(45, 0);
@@ -80,7 +142,9 @@ public class Ludoboardgame extends Application {
         imgPawnPurple2.relocate(45, 350);
         imgPawnPurple3.relocate(45, 400);
         imgPawnPurple4.relocate(45, 450);
-        leftPane.getChildren().addAll(imgPawnBlue1, imgPawnBlue2, imgPawnBlue3, imgPawnBlue4, imgPawnPurple1, imgPawnPurple2, imgPawnPurple3, imgPawnPurple4);
+        leftPane.getChildren()
+                .addAll(imgPawnBlue1, imgPawnBlue2, imgPawnBlue3, imgPawnBlue4, imgPawnPurple1, imgPawnPurple2,
+                        imgPawnPurple3, imgPawnPurple4);
         imgPawnRed1.relocate(65, 0);
         imgPawnRed2.relocate(65, 50);
         imgPawnRed3.relocate(65, 100);
@@ -89,7 +153,9 @@ public class Ludoboardgame extends Application {
         imgPawnGreen2.relocate(65, 350);
         imgPawnGreen3.relocate(65, 400);
         imgPawnGreen4.relocate(65, 450);
-        rightPane.getChildren().addAll(imgPawnRed1, imgPawnRed2, imgPawnRed3, imgPawnRed4, imgPawnGreen1, imgPawnGreen2, imgPawnGreen3, imgPawnGreen4);
+        rightPane.getChildren()
+                .addAll(imgPawnRed1, imgPawnRed2, imgPawnRed3, imgPawnRed4, imgPawnGreen1, imgPawnGreen2, imgPawnGreen3,
+                        imgPawnGreen4);
         label0.relocate(300, 143);
         but0.setPrefWidth(100);
         but0.relocate(645, 115);
@@ -99,7 +165,6 @@ public class Ludoboardgame extends Application {
         downPane.getChildren().addAll(label0, but0);
     }
 
-
     public void drawPlayersQuantity(Pane pane, Pane right, Pane left, GridPane grid) {
 
         pane.getChildren().removeAll(label0, but0);
@@ -108,7 +173,8 @@ public class Ludoboardgame extends Application {
 
         newbtn1.relocate(410, 140);
         newbtn1.setOnAction((e) -> {
-            quantity.setQuantityOfPlayers(2);
+            PlayersQuantity quantity = new PlayersQuantity(2);
+            configuration.setPlayersQuantity(quantity);
             pane.getChildren().removeAll(label1, newbtn1, newbtn2, newbtn3);
             System.out.println(quantity.getQuantityOfPlayers());
             setPlayersName(pane, right, left, grid);
@@ -116,7 +182,8 @@ public class Ludoboardgame extends Application {
 
         newbtn2.relocate(440, 140);
         newbtn2.setOnAction((e) -> {
-            quantity.setQuantityOfPlayers(3);
+            PlayersQuantity quantity = new PlayersQuantity(3);
+            configuration.setPlayersQuantity(quantity);
             pane.getChildren().removeAll(label1, newbtn1, newbtn2, newbtn3);
             System.out.println(quantity.getQuantityOfPlayers());
             setPlayersName(pane, right, left, grid);
@@ -124,7 +191,8 @@ public class Ludoboardgame extends Application {
 
         newbtn3.relocate(470, 140);
         newbtn3.setOnAction((e) -> {
-            quantity.setQuantityOfPlayers(4);
+            PlayersQuantity quantity = new PlayersQuantity(4);
+            configuration.setPlayersQuantity(quantity);
             pane.getChildren().removeAll(label1, newbtn1, newbtn2, newbtn3);
             System.out.println(quantity.getQuantityOfPlayers());
             setPlayersName(pane, right, left, grid);
@@ -132,10 +200,9 @@ public class Ludoboardgame extends Application {
         pane.getChildren().addAll(label1, newbtn1, newbtn2, newbtn3);
     }
 
-
     public void setPlayersName(Pane downPane, Pane pRight, Pane pLeft, GridPane grid) {
 
-        if (quantity.getQuantityOfPlayers() == 2) {
+        if (configuration.getPlayersQuantity().getQuantityOfPlayers() == 2) {
             label0.setText("Podaj imię gracza z żółtymi pionkami ");
             label0.relocate(200, 110);
             label1.setText("Podaj imię gracza z niebieskimi pionkami ");
@@ -163,95 +230,30 @@ public class Ludoboardgame extends Application {
                 //następna metoda
             });
         }
-        if (quantity.getQuantityOfPlayers() == 3) {
-            label0.setText("Podaj imiona graczy: ");
-            label0.relocate(100, 130);
-            ImageView imgYellow = new ImageView(pawnPurple);
-            ImageView imgBlue = new ImageView(pawnBlue);
-            ImageView imgRed = new ImageView(pawnRed);
-            imgYellow.relocate(240, 90);
-            imgBlue.relocate(480, 90);
-            imgRed.relocate(240, 140);
-            TextField nameTextFieldY = new TextField();
-            nameTextFieldY.relocate(290, 105);
-            nameTextFieldY.setMinWidth(150);
-            TextField nameTextFieldB = new TextField();
-            nameTextFieldB.relocate(530, 105);
-            nameTextFieldB.setMinWidth(150);
-            TextField nameTextFieldR = new TextField();
-            nameTextFieldR.relocate(290, 150);
-            nameTextFieldR.setMinWidth(150);
-            downPane.getChildren().addAll(label0, imgYellow, nameTextFieldY, imgBlue, nameTextFieldB, imgRed, nameTextFieldR);
 
-            but1.setPrefWidth(70);
-            but1.relocate(715, 150);
-            but1.setText("Next >");
-            downPane.getChildren().add(but1);
-            but1.setOnAction((e) -> {
-                downPane.getChildren().removeAll(label0, imgYellow, nameTextFieldY, imgBlue, nameTextFieldB, imgRed, nameTextFieldR, but1);
-                configuration.player1.setPlayerName(nameTextFieldY.getText());
-                configuration.player2.setPlayerName(nameTextFieldB.getText());
-                configuration.player3.setPlayerName(nameTextFieldR.getText());
-                drawGameBeginning(downPane, pRight, pLeft, grid);
-                //następna metoda
-            });
-        }
-        if (quantity.getQuantityOfPlayers() == 4) {
-            label0.setText("Podaj imiona graczy: ");
-            label0.relocate(100, 130);
-            ImageView imgYellow = new ImageView(pawnPurple);
-            ImageView imgBlue = new ImageView(pawnBlue);
-            ImageView imgRed = new ImageView(pawnRed);
-            ImageView imgGreen = new ImageView(pawnGreen);
-            imgYellow.relocate(240, 90);
-            imgBlue.relocate(480, 90);
-            imgRed.relocate(240, 140);
-            imgGreen.relocate(480, 140);
-            TextField nameTextFieldY = new TextField();
-            nameTextFieldY.relocate(290, 105);
-            nameTextFieldY.setMinWidth(150);
-            TextField nameTextFieldB = new TextField();
-            nameTextFieldB.relocate(530, 105);
-            nameTextFieldB.setMinWidth(150);
-            TextField nameTextFieldR = new TextField();
-            nameTextFieldR.relocate(290, 150);
-            nameTextFieldR.setMinWidth(150);
-            TextField nameTextFieldG = new TextField();
-            nameTextFieldG.relocate(530, 150);
-            nameTextFieldG.setMinWidth(150);
-            downPane.getChildren().addAll(label0, imgYellow, nameTextFieldY, imgBlue, nameTextFieldB, imgRed, nameTextFieldR, imgGreen, nameTextFieldG);
-
-            but1.setPrefWidth(70);
-            but1.relocate(715, 150);
-            but1.setText("Next >");
-            downPane.getChildren().add(but1);
-            but1.setOnAction((e) -> {
-                downPane.getChildren().removeAll(label0, imgYellow, nameTextFieldY, imgBlue, nameTextFieldB, imgRed, nameTextFieldR, imgGreen, nameTextFieldG, but1);
-                configuration.player1.setPlayerName(nameTextFieldY.getText());
-                configuration.player2.setPlayerName(nameTextFieldB.getText());
-                configuration.player3.setPlayerName(nameTextFieldR.getText());
-                configuration.player4.setPlayerName(nameTextFieldG.getText());
-                drawGameBeginning(downPane, pRight, pLeft, grid);
-                //następna metoda
-            });
-        }
     }
 
-
     public void drawYellowPawnsAtHome(GridPane grid, Pawn pawny1, Pawn pawny2, Pawn pawny3, Pawn pawny4) {
-        GridPane.setConstraints(pawny1.getImgPawn(), pawny1.getHomePosition().getFx(), pawny1.getHomePosition().getFy());
-        GridPane.setConstraints(pawny2.getImgPawn(), pawny2.getHomePosition().getFx(), pawny2.getHomePosition().getFy());
-        GridPane.setConstraints(pawny3.getImgPawn(), pawny3.getHomePosition().getFx(), pawny3.getHomePosition().getFy());
-        GridPane.setConstraints(pawny4.getImgPawn(), pawny4.getHomePosition().getFx(), pawny4.getHomePosition().getFy());
+        GridPane.setConstraints(pawny1.getImgPawn(), pawny1.getHomePosition().getFx(),
+                pawny1.getHomePosition().getFy());
+        GridPane.setConstraints(pawny2.getImgPawn(), pawny2.getHomePosition().getFx(),
+                pawny2.getHomePosition().getFy());
+        GridPane.setConstraints(pawny3.getImgPawn(), pawny3.getHomePosition().getFx(),
+                pawny3.getHomePosition().getFy());
+        GridPane.setConstraints(pawny4.getImgPawn(), pawny4.getHomePosition().getFx(),
+                pawny4.getHomePosition().getFy());
         grid.getChildren().addAll(pawny1.getImgPawn(), pawny2.getImgPawn(), pawny3.getImgPawn(), pawny4.getImgPawn());
-
     }
 
     public void drawBluePawnsAtHome(GridPane grid, Pawn pawnB1, Pawn pawnB2, Pawn pawnB3, Pawn pawnB4) {
-        GridPane.setConstraints(pawnB1.getImgPawn(), pawnB1.getHomePosition().getFx(), pawnB1.getHomePosition().getFy());
-        GridPane.setConstraints(pawnB2.getImgPawn(), pawnB2.getHomePosition().getFx(), pawnB2.getHomePosition().getFy());
-        GridPane.setConstraints(pawnB3.getImgPawn(), pawnB3.getHomePosition().getFx(), pawnB3.getHomePosition().getFy());
-        GridPane.setConstraints(pawnB4.getImgPawn(), pawnB4.getHomePosition().getFx(), pawnB4.getHomePosition().getFy());
+        GridPane.setConstraints(pawnB1.getImgPawn(), pawnB1.getHomePosition().getFx(),
+                pawnB1.getHomePosition().getFy());
+        GridPane.setConstraints(pawnB2.getImgPawn(), pawnB2.getHomePosition().getFx(),
+                pawnB2.getHomePosition().getFy());
+        GridPane.setConstraints(pawnB3.getImgPawn(), pawnB3.getHomePosition().getFx(),
+                pawnB3.getHomePosition().getFy());
+        GridPane.setConstraints(pawnB4.getImgPawn(), pawnB4.getHomePosition().getFx(),
+                pawnB4.getHomePosition().getFy());
         grid.getChildren().addAll(pawnB1.getImgPawn(), pawnB2.getImgPawn(), pawnB3.getImgPawn(), pawnB4.getImgPawn());
     }
 
@@ -271,119 +273,69 @@ public class Ludoboardgame extends Application {
         grid.getChildren().addAll(imgPawnGreen1, imgPawnGreen2, imgPawnGreen3, imgPawnGreen4);
     }
 
-   /* public void drawStartBtn(Pane pane) {
-        Button but1 = new Button("Ludo Game Start");
-        but1.relocate(645, 115);
-        pane.getChildren().add(but1);
-        but1.setOnAction((e) -> {
-            //akcja przycisku
-            for (Player player : configuration.getPlayers()) {
-                do {
-                    label0.setText(player.getPlayerName() + " turn, please throw dice");
-                    label0.relocate(350, 120);
-                    pane.getChildren().add(label0);
-                    but1.setText("Dice throw");
-                    but1.setOnAction((f) -> {
-                        pane.getChildren().remove(label0);//
-                        drawDiceAfterThrow(pane);
+    public void drawThrowButton(Pane pane) {
+        Button throwBtn = new Button("throw dice");
+        throwBtn.relocate(645, 115);
 
-                        if (dice.getDiceResult() == 6) {
-                            player.getPlayerPawn1().getImgPawn().setOnMousePressed((event) -> {
-                                GridPane.setConstraints(player.getPlayerPawn1().getImgPawn(), player.getPlayerPawn1().getStartPosition().getFx(), player.getPlayerPawn1().getStartPosition().getFy());
+        throwBtn.setOnAction((f) -> {
+            configuration.incrementThrowsCounter();
+            drawDiceAfterThrow(pane);
 
-                                player.getPlayerPawn1().getImgPawn().setDisable(true);
-                                player.getPlayerPawn2().getImgPawn().setDisable(true);
-                                player.getPlayerPawn3().getImgPawn().setDisable(true);
-                                player.getPlayerPawn4().getImgPawn().setDisable(true);
-                                //return;
-                            });
-                            player.getPlayerPawn2().getImgPawn().setOnMousePressed((event) -> {
-                                GridPane.setConstraints(player.getPlayerPawn2().getImgPawn(), player.getPlayerPawn2().getStartPosition().getFx(), player.getPlayerPawn2().getStartPosition().getFy());
-                                player.getPlayerPawn1().getImgPawn().setDisable(true);
-                                player.getPlayerPawn2().getImgPawn().setDisable(true);
-                                player.getPlayerPawn3().getImgPawn().setDisable(true);
-                                player.getPlayerPawn4().getImgPawn().setDisable(true);
-                                //return;
-                            });
-                            player.getPlayerPawn3().getImgPawn().setOnMousePressed((event) -> {
-                                GridPane.setConstraints(player.getPlayerPawn3().getImgPawn(), player.getPlayerPawn3().getStartPosition().getFx(), player.getPlayerPawn3().getStartPosition().getFy());
-                                player.getPlayerPawn1().getImgPawn().setDisable(true);
-                                player.getPlayerPawn2().getImgPawn().setDisable(true);
-                                player.getPlayerPawn3().getImgPawn().setDisable(true);
-                                player.getPlayerPawn4().getImgPawn().setDisable(true);
-                                //return;
-                            });
-                            player.getPlayerPawn4().getImgPawn().setOnMousePressed((event) -> {
-                                GridPane.setConstraints(player.getPlayerPawn4().getImgPawn(), player.getPlayerPawn4().getStartPosition().getFx(), player.getPlayerPawn4().getStartPosition().getFy());
-                                player.getPlayerPawn1().getImgPawn().setDisable(true);
-                                player.getPlayerPawn2().getImgPawn().setDisable(true);
-                                player.getPlayerPawn3().getImgPawn().setDisable(true);
-                                player.getPlayerPawn4().getImgPawn().setDisable(true);
-                                //return;
-                            });
-                        }
-                    });
-                }while (dice.getDiceResult() != 6);
+            if (dice.getDiceResult() == 6) {
+                moveCurrentPlayerToNextPosition();
+                finishCurrentPlayerMove();
+                return;
+            }
+            if (configuration.getThrowsCounter() == 3) {
+                finishCurrentPlayerMove();
             }
         });
-    }*/
+
+        pane.getChildren().addAll(throwBtn);
+    }
 
     public void drawStartBtn(Pane pane) {
-        Button but1 = new Button("Ludo Game Start");
+        Button startGameButton = new Button("Ludo Game Start");
         //Label playerLabel = new Label();
         //playerLabel.relocate(350, 120);
-        but1.relocate(645, 115);
-        pane.getChildren().add(but1);
-        but1.setOnAction((e) -> {
-            pane.getChildren().remove(but1);
-            //but1.relocate(745, 115);//645
-            Label playerLabel2 = new Label();
-            playerLabel2.relocate(350, 120);
+        startGameButton.relocate(645, 115);
+        pane.getChildren().add(startGameButton);
+        startGameButton.setOnAction((e) -> {
+            //pane.getChildren().remove(startGameButton);
+            configuration.setCurrentPlayer(configuration.getPlayer1());
+            drawThrowButton(pane);
 
-            Button throwBtn = new Button("throw dice");
-            throwBtn.relocate(645, 115);
-
-            throwBtn.setOnAction((f) -> {
-                drawDiceAfterThrow(pane);
-                configuration.setDidntThrow(false);
-            });
-            pane.getChildren().addAll(throwBtn, playerLabel2);
-            //akcja przycisku
-            for (Player player : configuration.getPlayers()) {
-                playerLabel2.setText(player.getPlayerName() + " turn, please throw dice");
-                for (int g = 0; g < 3; g++) {
-
-                    while (configuration.isDidntThrow()) ;// ..................
-                    configuration.setDidntThrow(true);//.................
-                    if (dice.getDiceResult() == 6) {
-                        //ustaw pionek
-                        GridPane.setConstraints(player.getPlayerPawn1().getImgPawn(), player.getPlayerPawn1().getStartPosition().getFx(), player.getPlayerPawn1().getStartPosition().getFy());
-                        break;
-                    }
-                }
-            }
+            startGameButton.relocate(745, 115);//645
+            startGameButton.setOnAction(null);
         });
     }
 
-
     public void drawGameBeginning(Pane downPane, Pane pRight, Pane pLeft, GridPane grid) {
-        pLeft.getChildren().removeAll(imgPawnBlue1, imgPawnBlue2, imgPawnBlue3, imgPawnBlue4, imgPawnPurple1, imgPawnPurple2, imgPawnPurple3, imgPawnPurple4);
-        pRight.getChildren().removeAll(imgPawnRed1, imgPawnRed2, imgPawnRed3, imgPawnRed4, imgPawnGreen1, imgPawnGreen2, imgPawnGreen3, imgPawnGreen4);
-        if (quantity.getQuantityOfPlayers() == 2) {
-            drawYellowPawnsAtHome(grid, configuration.pawn1y, configuration.pawn2y, configuration.pawn3y, configuration.pawn4y);
-            drawBluePawnsAtHome(grid, configuration.pawn1b, configuration.pawn2b, configuration.pawn3b, configuration.pawn4b);
+        pLeft.getChildren()
+                .removeAll(imgPawnBlue1, imgPawnBlue2, imgPawnBlue3, imgPawnBlue4, imgPawnPurple1, imgPawnPurple2,
+                        imgPawnPurple3, imgPawnPurple4);
+        pRight.getChildren().removeAll(imgPawnRed1, imgPawnRed2, imgPawnRed3, imgPawnRed4, imgPawnGreen1, imgPawnGreen2,
+                imgPawnGreen3, imgPawnGreen4);
+        if (configuration.getPlayersQuantity().getQuantityOfPlayers() == 2) {
+            drawYellowPawnsAtHome(grid, configuration.pawn1y, configuration.pawn2y, configuration.pawn3y,
+                    configuration.pawn4y);
+            drawBluePawnsAtHome(grid, configuration.pawn1b, configuration.pawn2b, configuration.pawn3b,
+                    configuration.pawn4b);
             drawStartBtn(downPane);
-
         }
-        if (quantity.getQuantityOfPlayers() == 3) {
-            drawYellowPawnsAtHome(grid, configuration.pawn1y, configuration.pawn2y, configuration.pawn3y, configuration.pawn4y);
-            drawBluePawnsAtHome(grid, configuration.pawn1b, configuration.pawn2b, configuration.pawn3b, configuration.pawn4b);
+        if (configuration.getPlayersQuantity().getQuantityOfPlayers() == 3) {
+            drawYellowPawnsAtHome(grid, configuration.pawn1y, configuration.pawn2y, configuration.pawn3y,
+                    configuration.pawn4y);
+            drawBluePawnsAtHome(grid, configuration.pawn1b, configuration.pawn2b, configuration.pawn3b,
+                    configuration.pawn4b);
             drawRedPawnsAtHome(grid);
             drawStartBtn(downPane);
         }
-        if (quantity.getQuantityOfPlayers() == 4) {
-            drawYellowPawnsAtHome(grid, configuration.pawn1y, configuration.pawn2y, configuration.pawn3y, configuration.pawn4y);
-            drawBluePawnsAtHome(grid, configuration.pawn1b, configuration.pawn2b, configuration.pawn3b, configuration.pawn4b);
+        if (configuration.getPlayersQuantity().getQuantityOfPlayers() == 4) {
+            drawYellowPawnsAtHome(grid, configuration.pawn1y, configuration.pawn2y, configuration.pawn3y,
+                    configuration.pawn4y);
+            drawBluePawnsAtHome(grid, configuration.pawn1b, configuration.pawn2b, configuration.pawn3b,
+                    configuration.pawn4b);
             drawRedPawnsAtHome(grid);
             drawGreenPawnsAtHome(grid);
             drawStartBtn(downPane);
@@ -441,129 +393,23 @@ public class Ludoboardgame extends Application {
         }
     }
 
-    public static void main(String[] args) {
-        launch(args);
+    private void finishCurrentPlayerMove() {
+        Player currentPlayer = configuration.getCurrentPlayer();
+        System.out.println("Finishing round for player: " + currentPlayer.getPlayerName());
+        configuration.resetPlayerRound();
+        configuration.setNextPlayer();
+
+        System.out.println("Next player is: " + configuration.getCurrentPlayer().getPlayerName());
     }
 
-    @Override
-    public void start(Stage primaryStage) throws Exception {
+    private void moveCurrentPlayerToNextPosition() {
+        Player currentPlayer = configuration.getCurrentPlayer();
+        System.out.println("Moving player " + currentPlayer.getPlayerName() + "to next position.");
+        Pawn playerPawn = currentPlayer.getCurrentPawn();
 
-        primaryStage.getIcons().add(icon);
-        BackgroundSize backgroundSize = new BackgroundSize(100, 100, true, true, true, false);
-        BackgroundImage backgroundImage = new BackgroundImage(imageback, BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize);
-        Background background = new Background(backgroundImage);
-
-        BorderPane root = new BorderPane(); // Tworzymy rozkład.
-        root.setBackground(background);
-
-        //pane z siatka do centrum
-        GridPane grid = new GridPane();
-        grid.setGridLinesVisible(true);
-        final int numCols = 11;
-        final int numRows = 11;
-        for (int i = 0; i < numCols; i++) {
-            ColumnConstraints colConst = new ColumnConstraints();
-            colConst.setPercentWidth(100.0 / numCols);
-            grid.getColumnConstraints().add(colConst);
-        }
-        for (int i = 0; i < numRows; i++) {
-            RowConstraints rowConst = new RowConstraints();
-            rowConst.setPercentHeight(100.0 / numRows);
-            grid.getRowConstraints().add(rowConst);
-        }
-        root.setCenter(grid);
-
-        //ustaw margines górny na siatkę
-        StackPane up = new StackPane();
-        up.setPrefHeight(115);
-        root.setTop(up);
-
-        //ustaw prawy margines
-        Pane right = new Pane();
-        right.setPrefWidth(142);
-        root.setRight(right);
-
-        //ustaw spód
-        Pane down = new Pane();
-        down.setPrefHeight(190);
-        root.setBottom(down);
-
-        //ustaw lewy margines
-        Pane left = new Pane();
-        left.setPrefWidth(155);
-        root.setLeft(left);
-
-        //widok powitalny
-        drawWelcomeItems(left, down, right, grid);
-
-        Scene scene = new Scene(root, 800, 800, Color.BLACK);
-
-        primaryStage.setTitle("Ludo Board Game");
-        primaryStage.setScene(scene);
-        primaryStage.show();
-
+        Position nextPosition = playerPawn.getNextPosition();
+        GridPane.setConstraints(playerPawn.getImgPawn(),
+                nextPosition.getFx(),
+                nextPosition.getFy());
     }
 }
- /*public void runner(Pane pane, GridPane gridPane){
-        do{
-            for(int p=1;p==quantity.getQuantityOfPlayers();p++){
-                na dole drukuj aktualnie grającego grcza nr p
-                if(wszystkie w bazie){
-                    rzucamy max 3 razy aby wyszła 6
-                        jesli padło6 wybrac pionek do wprowdzenia na start
-                        jesli po trzech razach nie padło 6 to kolejka nastepnego gracza
-                }
-                if(cos już jest na scieżce){
-                    jesli padła 6 wyprowadz kolejny pionek na start a jesli ktos inny stoi na twoim polu startowym to go kasujesz na dom
-                            jesli inne oczka to przesuń pion z scieżki o ilosc wyrzuconych oczek - jak po przesunięciu najeżdzsz na wroga to on wraca do domu, jesli jest tam twoj pion to ruch nie możliwy
-
-                }
-            }
-
-        }while (zolte na mecie || niebieskie na mecie)
-    }*/
-
- /*
-        //okno do wypisania np instrukcji
-        Stage stage1 = new Stage();
-        stage1.initModality(Modality.WINDOW_MODAL);
-        VBox root1 = new VBox();
-        Button but11 = new Button("Start");
-        root1.getChildren().add(but11);
-        but11.setOnAction((e) -> {
-            stage1.close();
-        });
-        Scene scene1 = new Scene(root1, 800, 800);
-        stage1.setScene(scene1);
-        stage1.setTitle("Ludo Board Game1");
-        stage1.showAndWait();
-        */
- /*
-        //przycisk i kubek w części down
-        Button but1 = new Button("Dice throw");
-        but1.setPrefWidth(100);
-        but1.relocate(645, 115);
-
-        ImageView imgKubekBefore = new ImageView(kubekBefore);
-        imgKubekBefore.relocate(45, 80);
-        down.getChildren().addAll(but1,imgKubekBefore);
-        but1.setOnAction((e) -> {   //akcja przycisku
-            dice.throwDice();
-            drawDiceAfterThrow(down);
-        });
-        */
- /*
- public void drawKubekBeforeThrow(Pane pane) {
-        Button but1 = new Button("..Dice throw");
-        but1.setPrefWidth(100);
-        but1.relocate(645, 115);
-        //ImageView imgKubekBefore = new ImageView(kubekBefore);
-        imgKubekBefore.relocate(45, 80);
-        pane.getChildren().addAll(but1, imgKubekBefore);
-        but1.setOnAction((e) -> {   //akcja przycisku
-            //dice.throwDice();
-            //drawKubekAfterThrow(pane);
-            //drawDiceAfterThrow(pane);
-        });
-    }
-  */
