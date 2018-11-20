@@ -25,6 +25,7 @@ public class Position {
         this.fy = fy;
     }
 
+
     public static Position[] getYellowPath(int homePositionX, int homePositionY) {
         Position[] yellowPath = new Position[45];
         yellowPath[0] = new Position(homePositionX, homePositionY); //home

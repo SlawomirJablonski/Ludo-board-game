@@ -13,6 +13,10 @@ public class Player {
         pawns = new Pawn[]{playerPawn1, playerPawn2, playerPawn3, playerPawn4};
     }
 
+    public Pawn[] getPawns() {
+        return pawns;
+    }
+
     public String getPlayerName() {
         return playerName;
     }
@@ -31,5 +35,9 @@ public class Player {
 
     public Pawn getCurrentPawn() {
         return pawns[currentPawn];
+    }
+
+    public void setCurrentPawn(int currentPawn) {
+        this.currentPawn = currentPawn;
     }
 }

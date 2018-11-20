@@ -10,4 +10,5 @@ public class PlayersQuantity {
     public int getQuantityOfPlayers() {
         return quantityOfPlayers;
     }
+
 }
