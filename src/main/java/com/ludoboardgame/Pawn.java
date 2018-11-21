@@ -7,42 +7,29 @@ import javafx.scene.layout.GridPane;
 public class Pawn {
     private int pawnIndex;
     private Position homePosition;
-    private Position startPosition;
     private Image pawnImage;
     private ImageView imgPawn = new ImageView(pawnImage);
-    private Position currentPos;
+    private int currentPosIndex = 0;
+    private Position[] path;
 
-    public Pawn(int pawnIndex, Position homePosition, Position startPosition, Image pawnImage, ImageView imgPawn, Position currentPos) {
+    public Pawn(int pawnIndex, Position[] path, Image pawnImage, ImageView imgPawn) {
         this.pawnIndex = pawnIndex;
-        this.homePosition = homePosition;
-        this.startPosition = startPosition;
+        this.homePosition = path[0];
+        this.path = path;
         this.pawnImage = pawnImage;
         this.imgPawn = imgPawn;
-        this.currentPos = currentPos;
-    }
-
-    public int getPawnIndex() {
-        return pawnIndex;
-    }
-
-    public void setPawnIndex(int pawnIndex) {
-        this.pawnIndex = pawnIndex;
     }
 
     public Position getHomePosition() {
         return homePosition;
     }
 
-    public void setHomePosition(Position homePosition) {
-        this.homePosition = homePosition;
+    public Position[] getPath() {
+        return path;
     }
 
-    public Position getStartPosition() {
-        return startPosition;
-    }
-
-    public void setStartPosition(Position startPosition) {
-        this.startPosition = startPosition;
+    public int getPawnIndex() {
+        return pawnIndex;
     }
 
     public Image getPawnImage() {
@@ -57,22 +44,29 @@ public class Pawn {
         return imgPawn;
     }
 
-    public void setImgPawn(ImageView imgPawn) {
-        this.imgPawn = imgPawn;
-    }
-
-    public Position getCurrentPos() {
-        return currentPos;
-    }
-
-    public void setCurrentPos(Position currentPos) {
-        this.currentPos = currentPos;
+    public void setCurrentPosIndex(int currentPosIndex) {
+        this.currentPosIndex = currentPosIndex;
     }
 
 
-    public void drawMove(Pawn pawn,Position position,GridPane gridPane){
-
-        GridPane.setConstraints(pawn.getImgPawn(), position.getFx(), position.getFy());
+    public Position getNextPosition() {
+        return path[++currentPosIndex];
+        //return path[1];
 
     }
+    public Position getCurrentPosition(){
+        return path[currentPosIndex];
+    }
+
+    public int getCurrentPosIndex() {
+        return currentPosIndex;
+    }
+
+    public Position getNextPositionBehindHome(int diceResult){
+        return path[currentPosIndex+diceResult];
+    }
+
+    public int getNextPosIndex(int diceResult){return currentPosIndex+diceResult;}
+
+
 }
