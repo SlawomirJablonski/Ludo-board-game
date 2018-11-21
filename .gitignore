@@ -101,3 +101,13 @@ gradle-app.setting
 **/build/
 
 # End of https://www.gitignore.io/api/gradle,intellij
+
+#moje wstawki
+.idea/
+README.md
+
+gradle/
+gradlew
+gradlew.bat
+
+
