@@ -330,20 +330,22 @@ public class Ludoboardgame extends Application {
             //pierwszy pionek wyjechał z bazy
             if (CurrPosForCurrPawn != HomePosForCurrPawn) {
                 //jesli docelowe pole pute to wjedz
-                if (CurrPosXparamForNextPlayer != currPlayerPawn.getPath()[currPossIndexForCurrPlayerPawn + currentDiceResult].getFx() &&
+                if (currPossIndexForCurrPlayerPawn + currentDiceResult < 45&&
+                        CurrPosXparamForNextPlayer != currPlayerPawn.getPath()[currPossIndexForCurrPlayerPawn + currentDiceResult].getFx() &&
                         CurrPosYparamForNextPlayer != currPlayerPawn.getPath()[currPossIndexForCurrPlayerPawn + currentDiceResult].getFy()) {
 
                     //nie moze zająć pozycji poza zakresem indexPosition
-                    if (currPossIndexForCurrPlayerPawn + currentDiceResult < 45) {
+                    //if (currPossIndexForCurrPlayerPawn + currentDiceResult < 45) {
                         moveCurrentPlayerToNextPositionBehindHome(currentDiceResult);
-                    }
+                    //}
                     System.out.println("Player " + configuration.getCurrentPlayer().getPlayerName() + " pawn index: " +
                             configuration.getCurrentPlayer().getCurrentPawn().getCurrentPosIndex());
                     finishCurrentPlayerMove();
                     return;
                 }
                 //jesli na doceowym polu preciwnik to zbij go i wjedz
-                if (CurrPosXparamForNextPlayer == currPlayerPawn.getPath()[currPossIndexForCurrPlayerPawn + currentDiceResult].getFx() &&
+                if (currPossIndexForCurrPlayerPawn + currentDiceResult < 45&&
+                        CurrPosXparamForNextPlayer == currPlayerPawn.getPath()[currPossIndexForCurrPlayerPawn + currentDiceResult].getFx() &&
                         CurrPosYparamForNextPlayer == currPlayerPawn.getPath()[currPossIndexForCurrPlayerPawn + currentDiceResult].getFy()) {
                     //zbicie
                     moveOpponentToHome();
@@ -360,7 +362,8 @@ public class Ludoboardgame extends Application {
 
                     if (currPlayerPawnIndex == 0) {
                         moveCurrentPlayerToNextPositionBehindHome(currentDiceResult);
-                        currPlayerPawn.setPawnFinalPosIndex(currPossIndexForCurrPlayerPawn);//to powinna byc juz uaktualniona pozycja
+                        //*
+                        currPlayerPawn.setPawnFinalPosIndex(nextPosIndexForCurrPlayerPawn);//to powinna byc juz uaktualniona pozycja
                         System.out.println("Player " + configuration.getCurrentPlayer().getPlayerName() + " pawn index: " +
                                 configuration.getCurrentPlayer().getCurrentPawn().getCurrentPosIndex());
                         configuration.getCurrentPlayer().setCurrentPawn(1);
@@ -370,7 +373,7 @@ public class Ludoboardgame extends Application {
                     if (currPlayerPawnIndex == 1) {
                         if (nextPosIndexForCurrPlayerPawn != configuration.getCurrentPlayer().getPawns()[0].getPawnFinalPosIndex()) {
                             moveCurrentPlayerToNextPositionBehindHome(dice.getDiceResult());
-                            currPlayerPawn.setPawnFinalPosIndex(currPossIndexForCurrPlayerPawn);
+                            currPlayerPawn.setPawnFinalPosIndex(nextPosIndexForCurrPlayerPawn);
                             System.out.println("Player " + configuration.getCurrentPlayer().getPlayerName() + " pawn index: " +
                                     configuration.getCurrentPlayer().getCurrentPawn().getCurrentPosIndex());
                             configuration.getCurrentPlayer().setCurrentPawn(2);
@@ -382,7 +385,7 @@ public class Ludoboardgame extends Application {
                         if (nextPosIndexForCurrPlayerPawn != configuration.getCurrentPlayer().getPawns()[0].getPawnFinalPosIndex() &&
                                 nextPosIndexForCurrPlayerPawn != configuration.getCurrentPlayer().getPawns()[1].getPawnFinalPosIndex()) {
                             moveCurrentPlayerToNextPositionBehindHome(currentDiceResult);
-                            currPlayerPawn.setPawnFinalPosIndex(currPossIndexForCurrPlayerPawn);
+                            currPlayerPawn.setPawnFinalPosIndex(nextPosIndexForCurrPlayerPawn);
                             System.out.println("Player " + configuration.getCurrentPlayer().getPlayerName() + " pawn index: " +
                                     configuration.getCurrentPlayer().getCurrentPawn().getCurrentPosIndex());
                             configuration.getCurrentPlayer().setCurrentPawn(3);
