@@ -14,7 +14,6 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 
-
 public class Ludoboardgame extends Application {
     private Image imageback = new Image("ludo-board-game.jpg");
     private Image icon = new Image("ikonagry.jpg");
@@ -50,7 +49,7 @@ public class Ludoboardgame extends Application {
     private ImageView imgKubekBefore = new ImageView(kubekBefore);
     private ImageView imgKubekAfter = new ImageView(kubekAfter);
 
-    private Label label0 = new Label("Witaj w grze planszowej CHIŃCZYK !");
+    private Label label0 = new Label("Witaj w grze planszowej CHINCZYK !");
     private Label label1 = new Label("Podaj liczbę graczy");
     private Button newbtn1 = new Button("2");
     private Button newbtn2 = new Button("3");
@@ -124,6 +123,7 @@ public class Ludoboardgame extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
     }
+
     void restart(Pane left, Pane down, Pane right, GridPane grid) {
         left.getChildren().clear();
         down.getChildren().clear();
@@ -167,7 +167,7 @@ public class Ludoboardgame extends Application {
         Button restartBtn = new Button("Restart Game");
         restartBtn.relocate(45, 115);
         restartBtn.setOnAction((e) -> {
-            restart(leftPane,downPane,rightPane,grid);
+            restart(leftPane, downPane, rightPane, grid);
         });
         downPane.getChildren().add(restartBtn);
     }
@@ -287,32 +287,40 @@ public class Ludoboardgame extends Application {
         throwBtn.setOnAction((f) -> {
             configuration.incrementThrowsCounter();
             drawDiceAfterThrow(pane);
-            //jesli pierwszy pionek w bazie
-            if (configuration.getCurrentPlayer().getCurrentPawn().getCurrentPosition() == configuration.getCurrentPlayer().getCurrentPawn().getHomePosition()) {
+            System.out.println("checking: currentPlayer: " + configuration.getCurrentPlayer().getPlayerName());
 
-                if (dice.getDiceResult() == 6) {
+            int currentDiceResult = dice.getDiceResult();
+            Pawn currPlayerPawn = configuration.getCurrentPlayer().getCurrentPawn();
+            Position CurrPosForCurrPawn = currPlayerPawn.getCurrentPosition();
+            Position HomePosForCurrPawn = currPlayerPawn.getHomePosition();
+            int CurrPosXparamForNextPlayer = configuration.getNextPlyer().getCurrentPawn().getCurrentPosition().getFx();
+            int CurrPosYparamForNextPlayer = configuration.getNextPlyer().getCurrentPawn().getCurrentPosition().getFy();
+            int currPossIndexForCurrPlayerPawn = currPlayerPawn.getCurrentPosIndex();
+            int nextPosIndexForCurrPlayerPawn = currPlayerPawn.getNextPosIndex(currentDiceResult);
+            int currPlayerPawnIndex = currPlayerPawn.getPawnIndex();
+
+            //jesli pierwszy pionek w bazie
+            if (CurrPosForCurrPawn == HomePosForCurrPawn) {
+
+                if (currentDiceResult == 6) {
                     //jesli wolne pole to wjedz
-                    if (configuration.getNextPlyer().getCurrentPawn().getCurrentPosition().getFx() != configuration.getCurrentPlayer().getCurrentPawn().getPath()[1].getFx() &&
-                            configuration.getNextPlyer().getCurrentPawn().getCurrentPosition().getFy() != configuration.getCurrentPlayer().getCurrentPawn().getPath()[1].getFy()) {
+                    if (CurrPosXparamForNextPlayer != currPlayerPawn.getPath()[1].getFx() &&
+                            CurrPosYparamForNextPlayer != currPlayerPawn.getPath()[1].getFy()) {
                         moveCurrentPlayerToNextPosition();
-                        configuration.getCurrentPlayer().getCurrentPawn().setCurrentPosIndex(1);
-                        System.out.println("Player "+configuration.getCurrentPlayer().getPlayerName()+" pawn index: "+
+                        System.out.println("Player " + configuration.getCurrentPlayer().getPlayerName() + " pawn index: " +
                                 configuration.getCurrentPlayer().getCurrentPawn().getCurrentPosIndex());
                         finishCurrentPlayerMove();
                         return;
                     }
                     //lub gdy na docelowym polu wróg to zbicie
-                    if (configuration.getNextPlyer().getCurrentPawn().getCurrentPosition().getFx() == configuration.getCurrentPlayer().getCurrentPawn().getPath()[1].getFx() &&
-                            configuration.getNextPlyer().getCurrentPawn().getCurrentPosition().getFy() == configuration.getCurrentPlayer().getCurrentPawn().getPath()[1].getFy()) {
+                    if (CurrPosXparamForNextPlayer == currPlayerPawn.getPath()[1].getFx() &&
+                            CurrPosYparamForNextPlayer == currPlayerPawn.getPath()[1].getFy()) {
                         moveOpponentToHome();
-                        resetOpponentcurrPosIndex();
                         moveCurrentPlayerToNextPosition();
-                        configuration.getCurrentPlayer().getCurrentPawn().setCurrentPosIndex(1);
-                        System.out.println("Player "+configuration.getCurrentPlayer().getPlayerName()+" pawn index: "+
+                        System.out.println("Player " + configuration.getCurrentPlayer().getPlayerName() + " pawn index: " +
                                 configuration.getCurrentPlayer().getCurrentPawn().getCurrentPosIndex());
                         finishCurrentPlayerMove();
                         return;
-
                     }
                 }
                 if (configuration.getThrowsCounter() == 3) {
@@ -320,83 +328,79 @@ public class Ludoboardgame extends Application {
                 }
             }
             //pierwszy pionek wyjechał z bazy
-            if (configuration.getCurrentPlayer().getCurrentPawn().getCurrentPosition() != configuration.getCurrentPlayer().getCurrentPawn().getHomePosition()) {
+            if (CurrPosForCurrPawn != HomePosForCurrPawn) {
                 //jesli docelowe pole pute to wjedz
-                if (configuration.getNextPlyer().getCurrentPawn().getCurrentPosition().getFx() != configuration.getCurrentPlayer().getCurrentPawn().getPath()[1 + dice.getDiceResult()].getFx() &&
-                        configuration.getNextPlyer().getCurrentPawn().getCurrentPosition().getFy() != configuration.getCurrentPlayer().getCurrentPawn().getPath()[1 + dice.getDiceResult()].getFy()) {
+                if (CurrPosXparamForNextPlayer != currPlayerPawn.getPath()[currPossIndexForCurrPlayerPawn + currentDiceResult].getFx() &&
+                        CurrPosYparamForNextPlayer != currPlayerPawn.getPath()[currPossIndexForCurrPlayerPawn + currentDiceResult].getFy()) {
 
                     //nie moze zająć pozycji poza zakresem indexPosition
-                    if(configuration.getCurrentPlayer().getCurrentPawn().getCurrentPosIndex()+dice.getDiceResult()<45){
-                        moveCurrentPlayerToNextPositionBehindHome(dice.getDiceResult());
-                        configuration.getCurrentPlayer().getCurrentPawn().setCurrentPosIndex(configuration.getCurrentPlayer().getCurrentPawn().getCurrentPosIndex() + dice.getDiceResult());
+                    if (currPossIndexForCurrPlayerPawn + currentDiceResult < 45) {
+                        moveCurrentPlayerToNextPositionBehindHome(currentDiceResult);
                     }
-                    System.out.println("Player "+configuration.getCurrentPlayer().getPlayerName()+" pawn index: "+
+                    System.out.println("Player " + configuration.getCurrentPlayer().getPlayerName() + " pawn index: " +
                             configuration.getCurrentPlayer().getCurrentPawn().getCurrentPosIndex());
                     finishCurrentPlayerMove();
                     return;
                 }
                 //jesli na doceowym polu preciwnik to zbij go i wjedz
-                if (configuration.getNextPlyer().getCurrentPawn().getCurrentPosition().getFx() == configuration.getCurrentPlayer().getCurrentPawn().getPath()[1 + dice.getDiceResult()].getFx() &&
-                        configuration.getNextPlyer().getCurrentPawn().getCurrentPosition().getFy() == configuration.getCurrentPlayer().getCurrentPawn().getPath()[1 + dice.getDiceResult()].getFy()) {
+                if (CurrPosXparamForNextPlayer == currPlayerPawn.getPath()[currPossIndexForCurrPlayerPawn + currentDiceResult].getFx() &&
+                        CurrPosYparamForNextPlayer == currPlayerPawn.getPath()[currPossIndexForCurrPlayerPawn + currentDiceResult].getFy()) {
                     //zbicie
                     moveOpponentToHome();
-                    resetOpponentcurrPosIndex();
                     moveCurrentPlayerToNextPositionBehindHome(dice.getDiceResult());
-                    configuration.getCurrentPlayer().getCurrentPawn().setCurrentPosIndex(configuration.getCurrentPlayer().getCurrentPawn().getCurrentPosIndex() + dice.getDiceResult());
-                    System.out.println("Player "+configuration.getCurrentPlayer().getPlayerName()+" pawn index: "+
+                    System.out.println("Player " + configuration.getCurrentPlayer().getPlayerName() + " pawn index: " +
                             configuration.getCurrentPlayer().getCurrentPawn().getCurrentPosIndex());
                     finishCurrentPlayerMove();
                     return;
                 }
                 //wjazd na pola finish
                 //jesli posIndex w nastepnym ruchu bedzie...
-                if(configuration.getCurrentPlayer().getCurrentPawn().getCurrentPosIndex()+dice.getDiceResult()>=41 && configuration.getCurrentPlayer().getCurrentPawn().getCurrentPosIndex()+dice.getDiceResult()<=44){
+                if (currPossIndexForCurrPlayerPawn + currentDiceResult >= 41 && currPossIndexForCurrPlayerPawn + currentDiceResult <= 44) {
                     //warianty dla poszczegolnych pionków gracza
-                    if(configuration.getCurrentPlayer().getCurrentPawn().getPawnIndex()==0){
-                        moveCurrentPlayerToNextPositionBehindHome(dice.getDiceResult());
-                        configuration.getCurrentPlayer().getCurrentPawn().setCurrentPosIndex(configuration.getCurrentPlayer().getCurrentPawn().getCurrentPosIndex() + dice.getDiceResult());
-                        System.out.println("Player "+configuration.getCurrentPlayer().getPlayerName()+" pawn index: "+
+
+                    if (currPlayerPawnIndex == 0) {
+                        moveCurrentPlayerToNextPositionBehindHome(currentDiceResult);
+                        currPlayerPawn.setPawnFinalPosIndex(currPossIndexForCurrPlayerPawn);//to powinna byc juz uaktualniona pozycja
+                        System.out.println("Player " + configuration.getCurrentPlayer().getPlayerName() + " pawn index: " +
                                 configuration.getCurrentPlayer().getCurrentPawn().getCurrentPosIndex());
                         configuration.getCurrentPlayer().setCurrentPawn(1);
                         finishCurrentPlayerMove();
                         return;
                     }
-                    if(configuration.getCurrentPlayer().getCurrentPawn().getPawnIndex()==1){
-                        if(configuration.getCurrentPlayer().getCurrentPawn().getNextPosIndex(dice.getDiceResult())!=configuration.getCurrentPlayer().getPawns()[0].getCurrentPosIndex()){
+                    if (currPlayerPawnIndex == 1) {
+                        if (nextPosIndexForCurrPlayerPawn != configuration.getCurrentPlayer().getPawns()[0].getPawnFinalPosIndex()) {
                             moveCurrentPlayerToNextPositionBehindHome(dice.getDiceResult());
-                            configuration.getCurrentPlayer().getCurrentPawn().setCurrentPosIndex(configuration.getCurrentPlayer().getCurrentPawn().getCurrentPosIndex() + dice.getDiceResult());
-                            System.out.println("Player "+configuration.getCurrentPlayer().getPlayerName()+" pawn index: "+
+                            currPlayerPawn.setPawnFinalPosIndex(currPossIndexForCurrPlayerPawn);
+                            System.out.println("Player " + configuration.getCurrentPlayer().getPlayerName() + " pawn index: " +
                                     configuration.getCurrentPlayer().getCurrentPawn().getCurrentPosIndex());
                             configuration.getCurrentPlayer().setCurrentPawn(2);
                             finishCurrentPlayerMove();
                             return;
                         }
                     }
-                    if(configuration.getCurrentPlayer().getCurrentPawn().getPawnIndex()==2){
-                        if(configuration.getCurrentPlayer().getCurrentPawn().getNextPosIndex(dice.getDiceResult())!=configuration.getCurrentPlayer().getPawns()[0].getCurrentPosIndex()&&
-                                configuration.getCurrentPlayer().getCurrentPawn().getNextPosIndex(dice.getDiceResult())!=configuration.getCurrentPlayer().getPawns()[1].getCurrentPosIndex()){
-                            moveCurrentPlayerToNextPositionBehindHome(dice.getDiceResult());
-                            configuration.getCurrentPlayer().getCurrentPawn().setCurrentPosIndex(configuration.getCurrentPlayer().getCurrentPawn().getCurrentPosIndex() + dice.getDiceResult());
-                            System.out.println("Player "+configuration.getCurrentPlayer().getPlayerName()+" pawn index: "+
+                    if (currPlayerPawnIndex == 2) {
+                        if (nextPosIndexForCurrPlayerPawn != configuration.getCurrentPlayer().getPawns()[0].getPawnFinalPosIndex() &&
+                                nextPosIndexForCurrPlayerPawn != configuration.getCurrentPlayer().getPawns()[1].getPawnFinalPosIndex()) {
+                            moveCurrentPlayerToNextPositionBehindHome(currentDiceResult);
+                            currPlayerPawn.setPawnFinalPosIndex(currPossIndexForCurrPlayerPawn);
+                            System.out.println("Player " + configuration.getCurrentPlayer().getPlayerName() + " pawn index: " +
                                     configuration.getCurrentPlayer().getCurrentPawn().getCurrentPosIndex());
                             configuration.getCurrentPlayer().setCurrentPawn(3);
                             finishCurrentPlayerMove();
                             return;
                         }
                     }
-                    if(configuration.getCurrentPlayer().getCurrentPawn().getPawnIndex()==3){
-                        if(configuration.getCurrentPlayer().getCurrentPawn().getNextPosIndex(dice.getDiceResult())!=configuration.getCurrentPlayer().getPawns()[0].getCurrentPosIndex()&&
-                                configuration.getCurrentPlayer().getCurrentPawn().getNextPosIndex(dice.getDiceResult())!=configuration.getCurrentPlayer().getPawns()[1].getCurrentPosIndex()&&
-                                configuration.getCurrentPlayer().getCurrentPawn().getNextPosIndex(dice.getDiceResult())!=configuration.getCurrentPlayer().getPawns()[2].getCurrentPosIndex()){
-                            moveCurrentPlayerToNextPositionBehindHome(dice.getDiceResult());
-                            configuration.getCurrentPlayer().getCurrentPawn().setCurrentPosIndex(configuration.getCurrentPlayer().getCurrentPawn().getCurrentPosIndex() + dice.getDiceResult());
-                            System.out.println("Player "+configuration.getCurrentPlayer().getPlayerName()+" pawn index: "+
+                    if (currPlayerPawnIndex == 3) {
+                        if (nextPosIndexForCurrPlayerPawn != configuration.getCurrentPlayer().getPawns()[0].getPawnFinalPosIndex() &&
+                                nextPosIndexForCurrPlayerPawn != configuration.getCurrentPlayer().getPawns()[1].getPawnFinalPosIndex() &&
+                                nextPosIndexForCurrPlayerPawn != configuration.getCurrentPlayer().getPawns()[2].getPawnFinalPosIndex()) {
+                            moveCurrentPlayerToNextPositionBehindHome(currentDiceResult);
+                            System.out.println("Player " + configuration.getCurrentPlayer().getPlayerName() + " pawn index: " +
                                     configuration.getCurrentPlayer().getCurrentPawn().getCurrentPosIndex());
 
                             //show winner info, remove throwBtn
-                            label0.setText("Player "+configuration.getCurrentPlayer().getPlayerName()+" win the game!");
+                            label0.setText("Player " + configuration.getCurrentPlayer().getPlayerName() + " won the game!");
                             pane.getChildren().remove(throwBtn);
-
                         }
                     }
                 }
@@ -417,14 +421,9 @@ public class Ludoboardgame extends Application {
         startGameButton.relocate(645, 115);
         pane.getChildren().add(startGameButton);
         startGameButton.setOnAction((e) -> {
-            //.......
             pane.getChildren().remove(startGameButton);
             configuration.setCurrentPlayer(configuration.getPlayer1());
             drawThrowButton(pane);
-
-            //.........
-            //startGameButton.relocate(745, 115);//645
-            //startGameButton.setOnAction(null);
         });
     }
 
@@ -532,10 +531,7 @@ public class Ludoboardgame extends Application {
     private void moveOpponentToHome() {
         Player secondPlayer = configuration.getNextPlyer();
         Pawn opponentPawn = secondPlayer.getCurrentPawn();
+        opponentPawn.setCurrentPosIndex(0);
         GridPane.setConstraints(opponentPawn.getImgPawn(), opponentPawn.getHomePosition().getFx(), opponentPawn.getHomePosition().getFy());
-    }
-
-    private void resetOpponentcurrPosIndex() {
-        configuration.getNextPlyer().getCurrentPawn().setCurrentPosIndex(0);
     }
 }
