@@ -7,10 +7,10 @@ public class Player {
     private int currentPawn = 0;
     private Pawn[] pawns;
 
-    public Player(String playerName, String playerColor, Pawn playerPawn1, Pawn playerPawn2, Pawn playerPawn3, Pawn playerPawn4) {
+    public Player(String playerName, String playerColor, Pawn playerPawn1, Pawn playerPawn2, Pawn playerPawn3, Pawn playerPawn4, Pawn playerPawn5) {
         this.playerName = playerName;
         this.playerColor = playerColor;
-        pawns = new Pawn[]{playerPawn1, playerPawn2, playerPawn3, playerPawn4};
+        pawns = new Pawn[]{playerPawn1, playerPawn2, playerPawn3, playerPawn4, playerPawn5};
     }
 
     public Pawn[] getPawns() {
@@ -25,19 +25,12 @@ public class Player {
         this.playerName = playerName;
     }
 
-    public String getPlayerColor() {
-        return playerColor;
-    }
-
-    public void setPlayerColor(String playerColor) {
-        this.playerColor = playerColor;
-    }
-
     public Pawn getCurrentPawn() {
         return pawns[currentPawn];
     }
 
-    public void setCurrentPawn(int currentPawn) {
-        this.currentPawn = currentPawn;
+    public Pawn getNextPawn() {
+        return pawns[currentPawn++];
+        //return path[1];
     }
 }

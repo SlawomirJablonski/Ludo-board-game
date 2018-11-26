@@ -54,8 +54,12 @@ public class Pawn {
     public Position getNextPosition() {
         return path[++currentPosIndex];
         //return path[1];
-
     }
+    public Position getLastPosition() {
+        return path[++currentPosIndex];
+        //return path[1];
+    }
+
     public Position getCurrentPosition(){
         return path[currentPosIndex];
     }
@@ -68,6 +72,11 @@ public class Pawn {
         //return path[currentPosIndex+diceResult];
         currentPosIndex=currentPosIndex+diceResult;
         return path[currentPosIndex];
+    }
+    public Position getFinishPosition(int diceResult){
+        return path[currentPosIndex+diceResult];
+        //currentPosIndex=currentPosIndex+diceResult;
+        //return path[currentPosIndex];
     }
 
     public int getNextPosIndex(int diceResult){return currentPosIndex+diceResult;}

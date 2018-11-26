@@ -61,11 +61,13 @@ public class Configuration {
     Pawn pawn2y = new Pawn(2, Position.getYellowPath(1, 9), pawnPurple, imgPawnPurple2);
     Pawn pawn3y = new Pawn(3, Position.getYellowPath(0, 10), pawnPurple, imgPawnPurple3);
     Pawn pawn4y = new Pawn(4, Position.getYellowPath(1, 10), pawnPurple, imgPawnPurple4);
+    Pawn pawn5y = new Pawn(5, Position.getYellowPath(0, 8), pawnPurple, imgPawnPurple4);
 
     Pawn pawn1b = new Pawn(1, Position.getBluePath(0, 0), pawnBlue, imgPawnBlue1);
-    Pawn pawn2b = new Pawn(2, Position.getBluePath(0, 1), pawnBlue, imgPawnBlue2);
-    Pawn pawn3b = new Pawn(3, Position.getBluePath(1, 0), pawnBlue, imgPawnBlue3);
+    Pawn pawn2b = new Pawn(2, Position.getBluePath(1, 0), pawnBlue, imgPawnBlue2);
+    Pawn pawn3b = new Pawn(3, Position.getBluePath(0, 1), pawnBlue, imgPawnBlue3);
     Pawn pawn4b = new Pawn(4, Position.getBluePath(1, 1), pawnBlue, imgPawnBlue4);
+    Pawn pawn5b = new Pawn(4, Position.getBluePath(0, 2), pawnBlue, imgPawnBlue4);
 /*
 //nieobrobione przyciski !!!
     Pawn pawn1r = new Pawn(1,new Position(9,0),new Position(6,0),pawnRed,imgPawnRed1,new Position(9,0));
@@ -80,8 +82,8 @@ public class Configuration {
 
     int playerIndex = 0;
 
-    Player player1 = new Player("Payer1", "yellow", pawn1y, pawn2y, pawn3y, pawn4y);
-    Player player2 = new Player("Payer2", "blue", pawn1b, pawn2b, pawn3b, pawn4b);
+    Player player1 = new Player("Payer1", "yellow", pawn1y, pawn2y, pawn3y, pawn4y,pawn5y);
+    Player player2 = new Player("Payer2", "blue", pawn1b, pawn2b, pawn3b, pawn4b,pawn5b);
 
     /*  Player player3 = new Player("Payer3","red",pawn1r,pawn2r,pawn3r,pawn4r);
       Player player4 = new Player("Payer4","green",pawn1g,pawn2g,pawn3g,pawn4g);
@@ -101,7 +103,7 @@ public class Configuration {
 
     }
 
-    public Player getNextPlyer() {
+    public Player getNextPlayer() {
         if (playerIndex==0){
             return getPlayers()[1];
         } else {
@@ -119,5 +121,11 @@ public class Configuration {
 
     public void incrementThrowsCounter() {
         throwsCounter++;
+    }
+
+    public Position getNextPlayerCurrPawnPos(){
+        int nextPlayerIndex = (playerIndex + 1) % playersQuantity.getQuantityOfPlayers();
+        Position nextPlayerPos = getPlayers()[nextPlayerIndex].getCurrentPawn().getCurrentPosition();
+        return nextPlayerPos;
     }
 }

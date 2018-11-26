@@ -13,18 +13,9 @@ public class Position {
         return fx;
     }
 
-    public void setFx(int fx) {
-        this.fx = fx;
-    }
-
     public int getFy() {
         return fy;
     }
-
-    public void setFy(int fy) {
-        this.fy = fy;
-    }
-
 
     public static Position[] getYellowPath(int homePositionX, int homePositionY) {
         Position[] yellowPath = new Position[45];
