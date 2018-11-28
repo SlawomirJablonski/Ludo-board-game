@@ -102,9 +102,14 @@ public class Configuration {
     }
 
     public Player getNextPlyer() {
-        if(currentPlayer==player1) {
+        if (playerIndex==0){
+            return getPlayers()[1];
+        } else {
+            return getPlayers()[0];
+        }
+        /*if(currentPlayer==player1) {
             return player2;
-        } else return player1;
+        } else return player1;*/
     }
 
     public Player getPlayer1() {
