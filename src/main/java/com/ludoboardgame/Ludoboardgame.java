@@ -130,6 +130,7 @@ public class Ludoboardgame extends Application {
         down.getChildren().clear();
         right.getChildren().clear();
         grid.getChildren().clear();
+        //new Conf..
         drawWelcomeItems(left, down, right, grid);
     }
 
@@ -352,14 +353,14 @@ public class Ludoboardgame extends Application {
 
                 if (nextPosIndexForCurrPlayerPawn < 41) {  //przed wjazdem na pola finish
                     if (posForNextPlayer.getFx() != currPlayerPawn.getPath()[nextPosIndexForCurrPlayerPawn].getFx()&&
-                            posForNextPlayer.getFx() != currPlayerPawn.getPath()[nextPosIndexForCurrPlayerPawn].getFx()) {  //jezeli docelowe miejsce puste
+                            posForNextPlayer.getFy() != currPlayerPawn.getPath()[nextPosIndexForCurrPlayerPawn].getFy()) {  //jezeli docelowe miejsce puste
                         moveCurrentPlayerToNextPositionBehindHome(currentDiceResult);
                         finishCurrentPlayerMove();
                         curPlayerLabel.setText("Rzut kością dla gracza "+configuration.getCurrentPlayer().getPlayerName()+"  -->");
                         return;
                     }
                     if (posForNextPlayer.getFx() == currPlayerPawn.getPath()[nextPosIndexForCurrPlayerPawn].getFx()&&
-                            posForNextPlayer.getFx() == currPlayerPawn.getPath()[nextPosIndexForCurrPlayerPawn].getFx()) {  //jezeli docelowe miejsce zajete if (posForNextPlayer == currPlayerPawn.getPath()[nextPosIndexForCurrPlayerPawn])
+                            posForNextPlayer.getFy() == currPlayerPawn.getPath()[nextPosIndexForCurrPlayerPawn].getFy()) {  //jezeli docelowe miejsce zajete if (posForNextPlayer == currPlayerPawn.getPath()[nextPosIndexForCurrPlayerPawn])
                         System.out.println("spełniono warunek zbicia xxxxxxxxxxxxxxxxxxxx");
                         moveOpponentToHome();
                         moveCurrentPlayerToNextPositionBehindHome(currentDiceResult);
