@@ -82,8 +82,8 @@ public class Configuration {
 
     int playerIndex = 0;
 
-    Player player1 = new Player("Payer1", "yellow", pawn1y, pawn2y, pawn3y, pawn4y,pawn5y);
-    Player player2 = new Player("Payer2", "blue", pawn1b, pawn2b, pawn3b, pawn4b,pawn5b);
+    Player player1 = new Player("Payer1", "yellow", pawn1y, pawn2y, pawn3y, pawn4y);
+    Player player2 = new Player("Payer2", "blue", pawn1b, pawn2b, pawn3b, pawn4b);
 
     /*  Player player3 = new Player("Payer3","red",pawn1r,pawn2r,pawn3r,pawn4r);
       Player player4 = new Player("Payer4","green",pawn1g,pawn2g,pawn3g,pawn4g);

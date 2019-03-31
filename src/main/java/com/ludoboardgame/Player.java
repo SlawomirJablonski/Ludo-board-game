@@ -7,10 +7,10 @@ public class Player {
     private int currentPawn = 0;
     private Pawn[] pawns;
 
-    public Player(String playerName, String playerColor, Pawn playerPawn1, Pawn playerPawn2, Pawn playerPawn3, Pawn playerPawn4, Pawn playerPawn5) {
+    public Player(String playerName, String playerColor, Pawn playerPawn1, Pawn playerPawn2, Pawn playerPawn3, Pawn playerPawn4) {
         this.playerName = playerName;
         this.playerColor = playerColor;
-        pawns = new Pawn[]{playerPawn1, playerPawn2, playerPawn3, playerPawn4, playerPawn5};
+        pawns = new Pawn[]{playerPawn1, playerPawn2, playerPawn3, playerPawn4};
     }
 
     public Pawn[] getPawns() {
