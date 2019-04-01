@@ -11,15 +11,21 @@ public class Pawn {
     private ImageView imgPawn = new ImageView(pawnImage);
     private int currentPosIndex = 0;
     private Position[] path;
+    private int offset;
 
     private int pawnFinalPosIndex;
 
-    public Pawn(int pawnIndex, Position[] path, Image pawnImage, ImageView imgPawn) {
+    public Pawn(int pawnIndex, Position[] path, Image pawnImage, ImageView imgPawn, int offset) {
         this.pawnIndex = pawnIndex;
         this.homePosition = path[0];
         this.path = path;
         this.pawnImage = pawnImage;
         this.imgPawn = imgPawn;
+        this.offset = offset;
+    }
+
+    public int getOffset() {
+        return offset;
     }
 
     public Position getHomePosition() {
