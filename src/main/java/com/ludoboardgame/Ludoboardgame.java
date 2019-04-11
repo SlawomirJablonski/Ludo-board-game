@@ -1,7 +1,6 @@
 package com.ludoboardgame;
 
 import javafx.application.Application;
-
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -15,7 +14,6 @@ import javafx.stage.Stage;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -303,37 +301,10 @@ public class Ludoboardgame extends Application {
 
 
 
-    public boolean naDocelowejInny(Pawn pawn, int dice) {
-        boolean result = false;
 
-        List<Pawn> otherPawns = Arrays.stream(configuration.getPlayers())
-                .flatMap(player -> Arrays.stream(player.getPawns()))
-                .filter(p -> p != pawn)
-                .collect(toList());
-
-        for (Pawn otherPawn : otherPawns) {
-
-            int pawnNextPosIndex = pawn.getCurrentPosIndex() + dice;
-            if (pawnNextPosIndex < 45) {
-                Position pawnNextPos = pawn.getPath()[pawnNextPosIndex];
-                int pawnNextX = pawnNextPos.getFx();
-                int pawnNextY = pawnNextPos.getFy();
-                int oponentCurX = otherPawn.getCurrentPosition().getFx();
-                int oponentCurY = otherPawn.getCurrentPosition().getFx();
-
-
-                if (pawnNextX != oponentCurX && pawnNextY != oponentCurY && pawn.getPawnImage() != otherPawn.getPawnImage()) {
-                    result = true;
-                }
-            }
-
-
-        }
-        return result;
-    }
 
     //spr czy pozycja docelowa pusta
-    public boolean isDocelowaPusta(Pawn pawn, int dice) {
+    public boolean isDocelowaNaScieżcePusta(Pawn pawn, int dice) {
 
         boolean result = false;
 
@@ -356,10 +327,16 @@ public class Ludoboardgame extends Application {
                     result = true;
                 }
 
-
             }
         }
         return result;
+    }
+
+    public void moveWhenEmpty(Pawn pawn, int dice){
+        Position nextPositionBH = pawn.getNextPositionBehindHome(dice);
+        GridPane.setConstraints(pawn.getImgPawn(),
+                nextPositionBH.getFx(),
+                nextPositionBH.getFy());
     }
 
     public void sendOpponetToHome(Pawn pawn, int dice) {
@@ -386,10 +363,8 @@ public class Ludoboardgame extends Application {
                 }
             }
 
-
         }
         if(oponent != null) {
-            //may produce NPE
             GridPane.setConstraints(oponent.getImgPawn(),
                     oponent.getHomePosition().getFx(),
                     oponent.getHomePosition().getFy());
@@ -397,18 +372,7 @@ public class Ludoboardgame extends Application {
 
     }
 
-    public boolean isJedenNaSciezce(Pawn pawn) {
-        return pawn.getCurrentPosition() != pawn.getHomePosition() || pawn.getCurrentPosIndex() < 41;
-    }
 
-    private void currPawnToNextPosBH(int diceResult) {
-        Pawn currPlayerPawnBH = configuration.getCurrentPlayer().getCurrentPawn();
-        System.out.println("Moving player " + configuration.getCurrentPlayer().getPlayerName() + " to next position.");
-        Position nextPositionBH = currPlayerPawnBH.getNextPositionBehindHome(diceResult);
-        GridPane.setConstraints(currPlayerPawnBH.getImgPawn(),
-                nextPositionBH.getFx(),
-                nextPositionBH.getFy());
-    }
 
 
     public void drawThrowButton(Pane pane) {
@@ -425,8 +389,7 @@ public class Ludoboardgame extends Application {
 
             int currentDiceResult = dice.getDiceResult();
             Pawn currPlayerPawn = configuration.getCurrentPlayer().getCurrentPawn();
-            Position currPosForCurrPawn = currPlayerPawn.getCurrentPosition();
-            Position homePosForCurrPawn = currPlayerPawn.getHomePosition();
+
             Position posForNextPlayer = configuration.getNextPlayerCurrPawnPos();
             int nextPosIndexForCurrPlayerPawn = currPlayerPawn.getNextPosIndex(currentDiceResult);
             int currPlayerPawnIndex = currPlayerPawn.getPawnIndex();
@@ -441,9 +404,18 @@ public class Ludoboardgame extends Application {
                     .filter(pawn -> pawn.getCurrentPosIndex()>40 && pawn.getCurrentPosIndex()<45)
                     .collect(toList());
 
+            //wprowadzam listy do pętli
 
+            Image currPawnImage = currPlayerPawn.getPawnImage();
 
-            if (currPosForCurrPawn == homePosForCurrPawn) {
+            List<Pawn> opponentPawnsOnPath = Arrays.stream(configuration.getPlayers())
+                    .flatMap(player -> Arrays.stream(player.getPawns()))
+                    .filter(pawn -> pawn.getPawnImage()!=currPawnImage)
+                    .filter(pawn -> pawn.getCurrentPosIndex()>0 && pawn.getCurrentPosIndex()<41)
+                    .collect(toList());
+
+            if (currPlayerHomePawns.size()+currPlayerInTargetPawns.size()==4) {
+                Pawn currPawn = currPlayerHomePawns.get(0);
                 if (dice.getDiceResult() == 6) {
                     if (posForNextPlayer != currPlayerPawn.getPath()[1]) {  //jezeli docelowe miejsce puste
                         System.out.println("dla next x " + posForNextPlayer.getFx() + ", y " + posForNextPlayer.getFy());
@@ -466,35 +438,44 @@ public class Ludoboardgame extends Application {
                     curPlayerLabel.setText("Rzut kością dla gracza " + configuration.getCurrentPlayer().getPlayerName() + "  -->");
                 }
             }
-            if (currPosForCurrPawn != homePosForCurrPawn) {  //pierwszy pionek wyjechał z bazy
+            if (currPlayerOnPathPawns.size()==1) {  //pierwszy pionek wyjechał z bazy
+                Pawn currPawn = currPlayerOnPathPawns.get(0);
 
-                if (nextPosIndexForCurrPlayerPawn < 41) {  //przed wjazdem na pola finish
-                    if (posForNextPlayer.getFx() != currPlayerPawn.getPath()[nextPosIndexForCurrPlayerPawn].getFx() &&
-                            posForNextPlayer.getFy() != currPlayerPawn.getPath()[nextPosIndexForCurrPlayerPawn].getFy()) {  //jezeli docelowe miejsce puste
-                        moveCurrentPlayerToNextPositionBehindHome(currentDiceResult);
+                if (currPawn.getCurrentPosIndex()+currentDiceResult < 41) {  //przed wjazdem na pola finish
+                    if (isDocelowaNaScieżcePusta(currPawn,currentDiceResult)) {  //jezeli docelowe miejsce puste
+                        System.out.println("DocelowaNaScieżcePusta +++++++++++++++++++++++++++++++++++++++++++");
+                        moveWhenEmpty(currPawn,currentDiceResult);
+                        finishCurrentPlayerMove();
+                        curPlayerLabel.setText("Rzut kością dla gracza " + configuration.getCurrentPlayer().getPlayerName() + "  -->");
+                        return;
+                    }else{
+                        System.out.println("spełniono warunek zbicia xxxxxxxxxxxxxxxxxxxx");
+                        //sendOpponetToHome(currPawn,currentDiceResult);
+                        moveWhenEmpty(currPawn,currentDiceResult);
                         finishCurrentPlayerMove();
                         curPlayerLabel.setText("Rzut kością dla gracza " + configuration.getCurrentPlayer().getPlayerName() + "  -->");
                         return;
                     }
-                    if (posForNextPlayer.getFx() == currPlayerPawn.getPath()[nextPosIndexForCurrPlayerPawn].getFx() &&
-                            posForNextPlayer.getFy() == currPlayerPawn.getPath()[nextPosIndexForCurrPlayerPawn].getFy()) {  //jezeli docelowe miejsce zajete if (posForNextPlayer == currPlayerPawn.getPath()[nextPosIndexForCurrPlayerPawn])
+                    /*if (!isDocelowaNaScieżcePusta(currPawn,currentDiceResult)) {  //jezeli docelowe miejsce zajete if (posForNextPlayer == currPlayerPawn.getPath()[nextPosIndexForCurrPlayerPawn])
                         System.out.println("spełniono warunek zbicia xxxxxxxxxxxxxxxxxxxx");
                         moveOpponentToHome();
-                        moveCurrentPlayerToNextPositionBehindHome(currentDiceResult);
+                        //sendOpponetToHome(currPawn,currentDiceResult);
+                        moveWhenEmpty(currPawn,currentDiceResult);
                         finishCurrentPlayerMove();
                         curPlayerLabel.setText("Rzut kością dla gracza " + configuration.getCurrentPlayer().getPlayerName() + "  -->");
                         return;
-                    }
+                    }*/
                 }
-                if (nextPosIndexForCurrPlayerPawn < 45) {  //wjechnie na pola finish
-                    if (currPlayerPawnIndex == 0) {
+                if (nextPosIndexForCurrPlayerPawn < 45) {  //wjechnie na pola finish *****************
+                    if (currPlayerPawnIndex == 1) {
+
                         moveCurrentPlayerToNextPositionBehindHome(currentDiceResult);
                         configuration.getCurrentPlayer().getNextPawn();
                         finishCurrentPlayerMove();
                         curPlayerLabel.setText("Rzut kością dla gracza " + configuration.getCurrentPlayer().getPlayerName() + "  -->");
                         return;
                     }
-                    if (currPlayerPawnIndex == 1) {
+                    if (currPlayerPawnIndex == 2) {
                         if (nextPosIndexForCurrPlayerPawn != configuration.getCurrentPlayer().getPawns()[0].getCurrentPosIndex()) {
                             moveCurrentPlayerToNextPositionBehindHome(currentDiceResult);
                             configuration.getCurrentPlayer().getNextPawn();
@@ -503,7 +484,7 @@ public class Ludoboardgame extends Application {
                             return;
                         }
                     }
-                    if (currPlayerPawnIndex == 2) {
+                    if (currPlayerPawnIndex == 3) {
                         if (nextPosIndexForCurrPlayerPawn != configuration.getCurrentPlayer().getPawns()[0].getCurrentPosIndex() &&
                                 nextPosIndexForCurrPlayerPawn != configuration.getCurrentPlayer().getPawns()[1].getCurrentPosIndex()) {
                             moveCurrentPlayerToNextPositionBehindHome(currentDiceResult);
@@ -513,7 +494,7 @@ public class Ludoboardgame extends Application {
                             return;
                         }
                     }
-                    if (currPlayerPawnIndex == 3) {
+                    if (currPlayerPawnIndex == 4) {
 
                         if (nextPosIndexForCurrPlayerPawn != configuration.getCurrentPlayer().getPawns()[0].getCurrentPosIndex() &&
                                 nextPosIndexForCurrPlayerPawn != configuration.getCurrentPlayer().getPawns()[1].getCurrentPosIndex() &&
@@ -522,31 +503,12 @@ public class Ludoboardgame extends Application {
 
                             moveCurrentPlayerToNextPositionBehindHome(currentDiceResult);
 
-                            configuration.getCurrentPlayer().getNextPawn();
-                            finishCurrentPlayerMove();
-                            curPlayerLabel.setText("Rzut kością dla gracza " + configuration.getCurrentPlayer().getPlayerName() + "  -->");
-                            return;
-                        }
-                    }
-                    if (currPlayerPawnIndex == 4) {//fikcyjny pionek
-
-                        if (nextPosIndexForCurrPlayerPawn != configuration.getCurrentPlayer().getPawns()[0].getCurrentPosIndex() &&
-                                nextPosIndexForCurrPlayerPawn != configuration.getCurrentPlayer().getPawns()[1].getCurrentPosIndex() &&
-                                nextPosIndexForCurrPlayerPawn != configuration.getCurrentPlayer().getPawns()[2].getCurrentPosIndex() &&
-                                nextPosIndexForCurrPlayerPawn != configuration.getCurrentPlayer().getPawns()[3].getCurrentPosIndex()) {
-                            System.out.println("spelniono warunek c-------------c------------c---------c------c");
-
-                            GridPane.setConstraints(configuration.getCurrentPlayer().getPawns()[3].getImgPawn(),
-                                    configuration.getCurrentPlayer().getPawns()[3].getCurrentPosition().getFx(),
-                                    configuration.getCurrentPlayer().getPawns()[3].getCurrentPosition().getFy());
-
                             winLabel.setText("GRATULACJE !  Gracz " + configuration.getCurrentPlayer().getPlayerName() + " wygrał grę! Zapraszamy do ponownej gry...");
                             winLabel.relocate(250, 143);
                             pane.getChildren().add(winLabel);
 
                             pane.getChildren().removeAll(curPlayerLabel, throwBtn);
                         }
-
                     }
                 }
                 if (configuration.getThrowsCounter() == 1) {
