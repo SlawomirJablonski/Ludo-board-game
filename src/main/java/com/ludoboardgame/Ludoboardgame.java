@@ -17,6 +17,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.toList;
+
 
 public class Ludoboardgame extends Application {
     private Image imageback = new Image("ludo-board-game.jpg");
@@ -294,118 +296,12 @@ public class Ludoboardgame extends Application {
         startGameButton.setOnAction((e) -> {
             pane.getChildren().remove(startGameButton);
             configuration.setCurrentPlayer(configuration.getPlayer1());
-            //drawThrowButton(pane);
-            drawThrowBtNew(pane);
+            drawThrowButton(pane);
+            //drawThrowBtNew(pane);
         });
     }
 
-    public void drawThrowBtNew(Pane pane) {
-        for (Player player : configuration.getPlayers()) {
-            curPlayerLabel.setText("Rzut kością dla gracza " + player.getPlayerName() + "  -->");
-            curPlayerLabel.relocate(350, 118);
-            Button throwBtn = new Button("   rzut kością    ");
-            throwBtn.relocate(645, 115);
 
-            throwBtn.setOnAction((f) -> {
-                configuration.incrementThrowsCounter();
-                drawDiceAfterThrow(pane);
-                int diceResult = dice.getDiceResult();
-
-                List<Pawn> pawnsInHome = Arrays.stream(player.getPawns())
-                        .filter(p -> p.getCurrentPosIndex() == 0).collect(Collectors.toList());
-                List<Pawn> pawnsInTrget = Arrays.stream(player.getPawns())
-                        .filter(p -> p.getCurrentPosIndex() > 40).collect(Collectors.toList());
-
-                Pawn firstFromHome = pawnsInHome.get(0);
-
-                List<Pawn> otherPawns = Arrays.stream(configuration.getPlayers())
-                        .flatMap(thePlayer -> Arrays.stream(thePlayer.getPawns()))
-                        .filter(p -> p != firstFromHome)
-                        .collect(Collectors.toList());
-
-                if (pawnsInHome.size() + pawnsInTrget.size() == 4) {
-                    if (diceResult == 6) {
-                        //docelowa pusta
-                        if (isDocelowaPusta(firstFromHome, 1)) {
-
-                            Position nextPosition = firstFromHome.getNextPosition();
-                            GridPane.setConstraints(firstFromHome.getImgPawn(),
-                                    nextPosition.getFx(),
-                                    nextPosition.getFy());
-                            configuration.resetPlayerRound();
-                            configuration.setNextPlayer();
-                            curPlayerLabel.setText("Rzut kością dla gracza " + configuration.getCurrentPlayer().getPlayerName() + "  -->");
-                            return;
-
-                        }
-                        //docelowa zajęta
-                        if (!isDocelowaPusta(firstFromHome, 1)) {
-                            sendOpponetToHome(firstFromHome, 1);
-                            Position nextPosition = firstFromHome.getNextPosition();
-                            GridPane.setConstraints(firstFromHome.getImgPawn(),
-                                    nextPosition.getFx(),
-                                    nextPosition.getFy());
-                            configuration.resetPlayerRound();
-                            configuration.setNextPlayer();
-                            curPlayerLabel.setText("Rzut kością dla gracza " + configuration.getCurrentPlayer().getPlayerName() + "  -->");
-                            return;
-                        }
-                    }
-                    if (configuration.getThrowsCounter() == 3) {
-                        configuration.resetPlayerRound();
-                        curPlayerLabel.setText("Rzut kością dla gracza " + configuration.getCurrentPlayer().getPlayerName() + "  -->");
-                    }
-                }
-
-
-                /*for (Pawn pawn : player.getPawns()) {
-
-
-                    //wszystkie dojechały do celu
-                    if (pawnsInTrget.size() == 4) {
-                        //player win
-                        curPlayerLabel.setText(configuration.getCurrentPlayer().getPlayerName() + " won the game!");
-                    }
-                    //wszystkie w home lub target
-
-                    //jeżeli jeden wyjechał z home
-                    if (isJedenNaSciezce(pawn)) {
-                        if (isDocelowaPusta(pawn, diceResult) && pawn.getCurrentPosIndex() + diceResult < 45) {
-
-                            Position nextPosition = pawn.getNextPositionBehindHome(diceResult);
-                            GridPane.setConstraints(pawn.getImgPawn(),
-                                    nextPosition.getFx(),
-                                    nextPosition.getFy());
-                            configuration.resetPlayerRound();
-                            configuration.setNextPlayer();
-                            curPlayerLabel.setText("Rzut kością dla gracza " + configuration.getCurrentPlayer().getPlayerName() + "  -->");
-                            return;
-
-                        }
-                        if (!isDocelowaPusta(pawn, diceResult) && naDocelowejInny(pawn, diceResult)) {
-                            sendOpponetToHome(pawn, 1);
-                            Position nextPosition = pawn.getNextPositionBehindHome(diceResult);
-                            GridPane.setConstraints(pawn.getImgPawn(),
-                                    nextPosition.getFx(),
-                                    nextPosition.getFy());
-                            configuration.resetPlayerRound();
-                            configuration.setNextPlayer();
-                            curPlayerLabel.setText("Rzut kością dla gracza " + configuration.getCurrentPlayer().getPlayerName() + "  -->");
-                            return;
-
-                        }
-                    }
-                }*/
-
-
-            });
-
-            //pane.getChildren().addAll(curPlayerLabel, throwBtn);
-            pane.getChildren().add(throwBtn);
-
-        }
-
-    }
 
     public boolean naDocelowejInny(Pawn pawn, int dice) {
         boolean result = false;
@@ -413,7 +309,7 @@ public class Ludoboardgame extends Application {
         List<Pawn> otherPawns = Arrays.stream(configuration.getPlayers())
                 .flatMap(player -> Arrays.stream(player.getPawns()))
                 .filter(p -> p != pawn)
-                .collect(Collectors.toList());
+                .collect(toList());
 
         for (Pawn otherPawn : otherPawns) {
 
@@ -444,7 +340,7 @@ public class Ludoboardgame extends Application {
         List<Pawn> otherPawns = Arrays.stream(configuration.getPlayers())
                 .flatMap(player -> Arrays.stream(player.getPawns()))
                 .filter(p -> p != pawn)
-                .collect(Collectors.toList());
+                .collect(toList());
 
         for (Pawn otherPawn : otherPawns) {
 
@@ -473,7 +369,7 @@ public class Ludoboardgame extends Application {
         List<Pawn> otherPawns = Arrays.stream(configuration.getPlayers())
                 .flatMap(player -> Arrays.stream(player.getPawns()))
                 .filter(p -> p != pawn)
-                .collect(Collectors.toList());
+                .collect(toList());
 
         for (Pawn otherPawn : otherPawns) {
 
@@ -534,6 +430,18 @@ public class Ludoboardgame extends Application {
             Position posForNextPlayer = configuration.getNextPlayerCurrPawnPos();
             int nextPosIndexForCurrPlayerPawn = currPlayerPawn.getNextPosIndex(currentDiceResult);
             int currPlayerPawnIndex = currPlayerPawn.getPawnIndex();
+
+            List<Pawn> currPlayerHomePawns = Arrays.stream(configuration.getCurrentPlayer().getPawns())
+                    .filter(pawn -> pawn.getCurrentPosIndex()==0)
+                    .collect(toList());
+            List<Pawn> currPlayerOnPathPawns = Arrays.stream(configuration.getCurrentPlayer().getPawns())
+                    .filter(pawn -> pawn.getCurrentPosIndex()>0 && pawn.getCurrentPosIndex()<41)
+                    .collect(toList());
+            List<Pawn> currPlayerInTargetPawns = Arrays.stream(configuration.getCurrentPlayer().getPawns())
+                    .filter(pawn -> pawn.getCurrentPosIndex()>40 && pawn.getCurrentPosIndex()<45)
+                    .collect(toList());
+
+
 
             if (currPosForCurrPawn == homePosForCurrPawn) {
                 if (dice.getDiceResult() == 6) {
