@@ -67,156 +67,6 @@ public class Position {
 
         return yellowPath;
     }
-    public static Position[] getYellowPath2() {
-        Position[] yellowPath2 = new Position[45];
-        yellowPath2[0] = new Position(1, 9); //home
-        yellowPath2[1] = new Position(4, 10);//start
-        yellowPath2[2] = new Position(4, 9);
-        yellowPath2[3] = new Position(4, 8);
-        yellowPath2[4] = new Position(4, 7);
-        yellowPath2[5] = new Position(4, 6);
-        yellowPath2[6] = new Position(3, 6);
-        yellowPath2[7] = new Position(2, 6);
-        yellowPath2[8] = new Position(1, 6);
-        yellowPath2[9] = new Position(0, 6);
-        yellowPath2[10] = new Position(0, 5);
-        yellowPath2[11] = new Position(0, 4);
-        yellowPath2[12] = new Position(1, 4);
-        yellowPath2[13] = new Position(2, 4);
-        yellowPath2[14] = new Position(3, 4);
-        yellowPath2[15] = new Position(4, 4);
-        yellowPath2[16] = new Position(4, 3);
-        yellowPath2[17] = new Position(4, 2);
-        yellowPath2[18] = new Position(4, 1);
-        yellowPath2[19] = new Position(4, 0);
-        yellowPath2[20] = new Position(5, 0);
-        yellowPath2[21] = new Position(6, 0);
-        yellowPath2[22] = new Position(6, 1);
-        yellowPath2[23] = new Position(6, 2);
-        yellowPath2[24] = new Position(6, 3);
-        yellowPath2[25] = new Position(6, 4);
-        yellowPath2[26] = new Position(7, 4);
-        yellowPath2[27] = new Position(8, 4);
-        yellowPath2[28] = new Position(9, 4);
-        yellowPath2[29] = new Position(10, 4);
-        yellowPath2[30] = new Position(10, 5);
-        yellowPath2[31] = new Position(10, 6);
-        yellowPath2[32] = new Position(9, 6);
-        yellowPath2[33] = new Position(8, 6);
-        yellowPath2[34] = new Position(7, 6);
-        yellowPath2[35] = new Position(6, 6);
-        yellowPath2[36] = new Position(6, 7);
-        yellowPath2[37] = new Position(6, 8);
-        yellowPath2[38] = new Position(6, 9);
-        yellowPath2[39] = new Position(6, 10);
-        yellowPath2[40] = new Position(5, 10);//last white field
-        yellowPath2[41] = new Position(5, 9);//finish
-        yellowPath2[42] = new Position(5, 8);//finish
-        yellowPath2[43] = new Position(5, 7);//finish
-        yellowPath2[44] = new Position(5, 6);//finish
-
-        return yellowPath2;
-    }
-    public static Position[] getYellowPath3() {
-        Position[] yellowPath3 = new Position[45];
-        yellowPath3[0] = new Position(0, 10); //home
-        yellowPath3[1] = new Position(4, 10);//start
-        yellowPath3[2] = new Position(4, 9);
-        yellowPath3[3] = new Position(4, 8);
-        yellowPath3[4] = new Position(4, 7);
-        yellowPath3[5] = new Position(4, 6);
-        yellowPath3[6] = new Position(3, 6);
-        yellowPath3[7] = new Position(2, 6);
-        yellowPath3[8] = new Position(1, 6);
-        yellowPath3[9] = new Position(0, 6);
-        yellowPath3[10] = new Position(0, 5);
-        yellowPath3[11] = new Position(0, 4);
-        yellowPath3[12] = new Position(1, 4);
-        yellowPath3[13] = new Position(2, 4);
-        yellowPath3[14] = new Position(3, 4);
-        yellowPath3[15] = new Position(4, 4);
-        yellowPath3[16] = new Position(4, 3);
-        yellowPath3[17] = new Position(4, 2);
-        yellowPath3[18] = new Position(4, 1);
-        yellowPath3[19] = new Position(4, 0);
-        yellowPath3[20] = new Position(5, 0);
-        yellowPath3[21] = new Position(6, 0);
-        yellowPath3[22] = new Position(6, 1);
-        yellowPath3[23] = new Position(6, 2);
-        yellowPath3[24] = new Position(6, 3);
-        yellowPath3[25] = new Position(6, 4);
-        yellowPath3[26] = new Position(7, 4);
-        yellowPath3[27] = new Position(8, 4);
-        yellowPath3[28] = new Position(9, 4);
-        yellowPath3[29] = new Position(10, 4);
-        yellowPath3[30] = new Position(10, 5);
-        yellowPath3[31] = new Position(10, 6);
-        yellowPath3[32] = new Position(9, 6);
-        yellowPath3[33] = new Position(8, 6);
-        yellowPath3[34] = new Position(7, 6);
-        yellowPath3[35] = new Position(6, 6);
-        yellowPath3[36] = new Position(6, 7);
-        yellowPath3[37] = new Position(6, 8);
-        yellowPath3[38] = new Position(6, 9);
-        yellowPath3[39] = new Position(6, 10);
-        yellowPath3[40] = new Position(5, 10);//last white field
-        yellowPath3[41] = new Position(5, 9);//finish
-        yellowPath3[42] = new Position(5, 8);//finish
-        yellowPath3[43] = new Position(5, 7);//finish
-        yellowPath3[44] = new Position(5, 6);//finish
-
-        return yellowPath3;
-    }
-    public static Position[] getYellowPath4() {
-        Position[] yellowPath4 = new Position[45];
-        yellowPath4[0] = new Position(1, 10); //home
-        yellowPath4[1] = new Position(4, 10);//start
-        yellowPath4[2] = new Position(4, 9);
-        yellowPath4[3] = new Position(4, 8);
-        yellowPath4[4] = new Position(4, 7);
-        yellowPath4[5] = new Position(4, 6);
-        yellowPath4[6] = new Position(3, 6);
-        yellowPath4[7] = new Position(2, 6);
-        yellowPath4[8] = new Position(1, 6);
-        yellowPath4[9] = new Position(0, 6);
-        yellowPath4[10] = new Position(0, 5);
-        yellowPath4[11] = new Position(0, 4);
-        yellowPath4[12] = new Position(1, 4);
-        yellowPath4[13] = new Position(2, 4);
-        yellowPath4[14] = new Position(3, 4);
-        yellowPath4[15] = new Position(4, 4);
-        yellowPath4[16] = new Position(4, 3);
-        yellowPath4[17] = new Position(4, 2);
-        yellowPath4[18] = new Position(4, 1);
-        yellowPath4[19] = new Position(4, 0);
-        yellowPath4[20] = new Position(5, 0);
-        yellowPath4[21] = new Position(6, 0);
-        yellowPath4[22] = new Position(6, 1);
-        yellowPath4[23] = new Position(6, 2);
-        yellowPath4[24] = new Position(6, 3);
-        yellowPath4[25] = new Position(6, 4);
-        yellowPath4[26] = new Position(7, 4);
-        yellowPath4[27] = new Position(8, 4);
-        yellowPath4[28] = new Position(9, 4);
-        yellowPath4[29] = new Position(10, 4);
-        yellowPath4[30] = new Position(10, 5);
-        yellowPath4[31] = new Position(10, 6);
-        yellowPath4[32] = new Position(9, 6);
-        yellowPath4[33] = new Position(8, 6);
-        yellowPath4[34] = new Position(7, 6);
-        yellowPath4[35] = new Position(6, 6);
-        yellowPath4[36] = new Position(6, 7);
-        yellowPath4[37] = new Position(6, 8);
-        yellowPath4[38] = new Position(6, 9);
-        yellowPath4[39] = new Position(6, 10);
-        yellowPath4[40] = new Position(5, 10);//last white field
-        yellowPath4[41] = new Position(5, 9);//finish
-        yellowPath4[42] = new Position(5, 8);//finish
-        yellowPath4[43] = new Position(5, 7);//finish
-        yellowPath4[44] = new Position(5, 6);//finish
-
-        return yellowPath4;
-    }
 
     public static Position[] getBluePath(int homePositionX, int homePositionY) {
         Position[] bluePath1 = new Position[45];
@@ -235,7 +85,7 @@ public class Position {
         bluePath1[11] = new Position(6, 0);
         bluePath1[12] = new Position(6, 1);
         bluePath1[13] = new Position(6, 2);
-        bluePath1[44] = new Position(6, 3);
+        bluePath1[14] = new Position(6, 3);
         bluePath1[15] = new Position(6, 4);
         bluePath1[16] = new Position(7, 4);
         bluePath1[17] = new Position(8, 4);
@@ -271,58 +121,63 @@ public class Position {
 
         return bluePath1;
     }
-    public static Position[] getBluePath2() {
-        Position[] bluePath2 = new Position[45];
-        bluePath2[0] = new Position(1, 0); //home
 
-        bluePath2[1] = new Position(0, 4);//start
-        bluePath2[2] = new Position(1, 4);
-        bluePath2[3] = new Position(2, 4);
-        bluePath2[4] = new Position(3, 4);
-        bluePath2[5] = new Position(4, 4);
-        bluePath2[6] = new Position(4, 3);
-        bluePath2[7] = new Position(4, 2);
-        bluePath2[8] = new Position(4, 1);
-        bluePath2[9] = new Position(4, 0);
-        bluePath2[10] = new Position(5, 0);
-        bluePath2[11] = new Position(6, 0);
-        bluePath2[12] = new Position(6, 1);
-        bluePath2[13] = new Position(6, 2);
-        bluePath2[44] = new Position(6, 3);
-        bluePath2[15] = new Position(6, 4);
-        bluePath2[16] = new Position(7, 4);
-        bluePath2[17] = new Position(8, 4);
-        bluePath2[18] = new Position(9, 4);
-        bluePath2[19] = new Position(10, 4);
-        bluePath2[20] = new Position(10, 5);
-        bluePath2[21] = new Position(10, 6);
-        bluePath2[22] = new Position(9, 6);
-        bluePath2[23] = new Position(8, 6);
-        bluePath2[24] = new Position(7, 6);
-        bluePath2[25] = new Position(6, 6);
-        bluePath2[26] = new Position(6, 7);
-        bluePath2[27] = new Position(6, 8);
-        bluePath2[28] = new Position(6, 9);
-        bluePath2[29] = new Position(6, 10);
-        bluePath2[30] = new Position(5, 10);
+    public static Position[] getRedPath(int homePositionX, int homePositionY) {
+        Position[] redPath = new Position[45];
+        redPath[0] = new Position(homePositionX, homePositionY); //home
 
-        bluePath2[31] = new Position(4, 10);
-        bluePath2[32] = new Position(4, 9);
-        bluePath2[33] = new Position(4, 8);
-        bluePath2[34] = new Position(4, 7);
-        bluePath2[35] = new Position(4, 6);
-        bluePath2[36] = new Position(3, 6);
-        bluePath2[37] = new Position(2, 6);
-        bluePath2[38] = new Position(1, 6);
-        bluePath2[39] = new Position(0, 6);
-        bluePath2[40] = new Position(0, 5);//last white field
+        redPath[1] = new Position(6, 0);//start
+        redPath[2] = new Position(6, 1);
+        redPath[3] = new Position(6, 2);
+        redPath[4] = new Position(6, 3);
+        redPath[5] = new Position(6, 4);
 
-        bluePath2[41] = new Position(1, 5);//finish
-        bluePath2[42] = new Position(2, 5);//finish
-        bluePath2[43] = new Position(3, 5);//finish
-        bluePath2[44] = new Position(4, 5);//finish
+        redPath[6] = new Position(7, 4);
+        redPath[7] = new Position(8, 4);
+        redPath[8] = new Position(9, 4);
+        redPath[9] = new Position(10, 4);
 
-        return bluePath2;
+        redPath[10] = new Position(10, 5);
+        redPath[11] = new Position(10, 6);
+        redPath[12] = new Position(9, 6);
+        redPath[13] = new Position(8, 6);
+        redPath[14] = new Position(7, 6);
+        redPath[15] = new Position(6, 6);
+
+        redPath[16] = new Position(6, 7);
+        redPath[17] = new Position(6, 8);
+        redPath[18] = new Position(6, 9);
+        redPath[19] = new Position(6, 10);
+        redPath[20] = new Position(5, 10);
+        redPath[21] = new Position(4, 10);
+
+        redPath[22] = new Position(4, 9);
+        redPath[23] = new Position(4, 8);
+        redPath[24] = new Position(4, 7);
+        redPath[25] = new Position(4, 6);
+        redPath[26] = new Position(3, 6);
+        redPath[27] = new Position(2, 6);
+        redPath[28] = new Position(1, 6);
+        redPath[29] = new Position(0, 6);
+
+        redPath[30] = new Position(0, 5);
+        redPath[31] = new Position(0, 4);
+        redPath[32] = new Position(1, 4);
+        redPath[33] = new Position(2, 4);
+        redPath[34] = new Position(3, 4);
+        redPath[35] = new Position(4, 4);
+        redPath[36] = new Position(4, 3);
+        redPath[37] = new Position(4, 2);
+        redPath[38] = new Position(4, 1);
+        redPath[39] = new Position(4, 0);
+        redPath[40] = new Position(5, 0);//last white field
+
+        redPath[41] = new Position(5, 1);//finish
+        redPath[42] = new Position(5, 2);//finish
+        redPath[43] = new Position(5, 3);//finish
+        redPath[44] = new Position(5, 4);//finish
+
+        return redPath;
     }
     public static Position[] getBluePath3() {
         Position[] bluePath3 = new Position[45];
@@ -377,58 +232,6 @@ public class Position {
 
         return bluePath3;
     }
-    public static Position[] getBluePath4() {
-        Position[] bluePath4 = new Position[45];
-        bluePath4[0] = new Position(1, 1); //home
 
-        bluePath4[1] = new Position(0, 4);//start
-        bluePath4[2] = new Position(1, 4);
-        bluePath4[3] = new Position(2, 4);
-        bluePath4[4] = new Position(3, 4);
-        bluePath4[5] = new Position(4, 4);
-        bluePath4[6] = new Position(4, 3);
-        bluePath4[7] = new Position(4, 2);
-        bluePath4[8] = new Position(4, 1);
-        bluePath4[9] = new Position(4, 0);
-        bluePath4[10] = new Position(5, 0);
-        bluePath4[11] = new Position(6, 0);
-        bluePath4[12] = new Position(6, 1);
-        bluePath4[13] = new Position(6, 2);
-        bluePath4[44] = new Position(6, 3);
-        bluePath4[15] = new Position(6, 4);
-        bluePath4[16] = new Position(7, 4);
-        bluePath4[17] = new Position(8, 4);
-        bluePath4[18] = new Position(9, 4);
-        bluePath4[19] = new Position(10, 4);
-        bluePath4[20] = new Position(10, 5);
-        bluePath4[21] = new Position(10, 6);
-        bluePath4[22] = new Position(9, 6);
-        bluePath4[23] = new Position(8, 6);
-        bluePath4[24] = new Position(7, 6);
-        bluePath4[25] = new Position(6, 6);
-        bluePath4[26] = new Position(6, 7);
-        bluePath4[27] = new Position(6, 8);
-        bluePath4[28] = new Position(6, 9);
-        bluePath4[29] = new Position(6, 10);
-        bluePath4[30] = new Position(5, 10);
-
-        bluePath4[31] = new Position(4, 10);
-        bluePath4[32] = new Position(4, 9);
-        bluePath4[33] = new Position(4, 8);
-        bluePath4[34] = new Position(4, 7);
-        bluePath4[35] = new Position(4, 6);
-        bluePath4[36] = new Position(3, 6);
-        bluePath4[37] = new Position(2, 6);
-        bluePath4[38] = new Position(1, 6);
-        bluePath4[39] = new Position(0, 6);
-        bluePath4[40] = new Position(0, 5);//last white field
-
-        bluePath4[41] = new Position(1, 5);//finish
-        bluePath4[42] = new Position(2, 5);//finish
-        bluePath4[43] = new Position(3, 5);//finish
-        bluePath4[44] = new Position(4, 5);//finish
-
-        return bluePath4;
-    }
 
 }
