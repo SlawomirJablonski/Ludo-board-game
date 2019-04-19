@@ -54,6 +54,8 @@ public class Ludoboardgame extends Application {
 
     private Label label0 = new Label("Witaj w grze planszowej CHIŃCZYK !");
     private Label label1 = new Label("Podaj liczbę graczy");
+    private Label label3 = new Label("Podaj imię gracza z czerwonymi pionkami ");
+    private Label label4 = new Label("Podaj imię gracza z zielonymi pionkami ");
     private Label winLabel = new Label();
     private Label curPlayerLabel = new Label();
     private Button newbtn1 = new Button("2");
@@ -266,6 +268,40 @@ public class Ludoboardgame extends Application {
                 System.out.println(configuration.player1.getPlayerName());
                 drawGameBeginning(downPane, pRight, pLeft, grid);
             });
+
+        }
+        if (configuration.getPlayersQuantity().getQuantityOfPlayers() == 3) {
+            label0.setText("Podaj imię gracza z żółtymi pionkami ");
+            label0.relocate(200, 100);
+            label1.setText("Podaj imię gracza z niebieskimi pionkami ");
+            label1.relocate(200, 130);
+            label3.relocate(200, 160);
+            // Tworzymy TextField
+            TextField nameTextField = new TextField();
+            nameTextField.relocate(425, 95);
+            nameTextField.setMinWidth(150);
+            TextField nameTextField1 = new TextField();
+            nameTextField1.relocate(425, 125);
+            nameTextField1.setMinWidth(150);
+            TextField nameTextField2 = new TextField();
+            nameTextField2.relocate(425, 155);
+            nameTextField2.setMinWidth(150);
+            // Dodajemy Label i TextField
+            downPane.getChildren().addAll(label0, label1, label3, nameTextField, nameTextField1, nameTextField2);
+
+            but1.setPrefWidth(70);
+            but1.relocate(600, 135);
+            but1.setText("Next >");
+            downPane.getChildren().add(but1);
+            but1.setOnAction((e) -> {
+                downPane.getChildren().removeAll(label0, label1, label3, nameTextField, nameTextField1, nameTextField2, but1);
+                configuration.player1.setPlayerName(nameTextField.getText());
+                configuration.player2.setPlayerName(nameTextField1.getText());
+                configuration.player3.setPlayerName(nameTextField2.getText());
+                System.out.println(configuration.player1.getPlayerName());
+                drawGameBeginning(downPane, pRight, pLeft, grid);
+            });
+
         }
 
     }
@@ -461,7 +497,7 @@ public class Ludoboardgame extends Application {
                     for (Pawn oponent:opponentPawnsOnPath) {
                         int a = opponentPawnsOnPath.size();
                         System.out.println(a);
-                        if (currPawn!=null && oponent.getCurrentPosition().getFx() != currPawn.getPath()[nextPosIndexForCurrPlayerPawn].getFx() &&
+                        if (oponent.getCurrentPosition().getFx() != currPawn.getPath()[nextPosIndexForCurrPlayerPawn].getFx() &&
 
                                 oponent.getCurrentPosition().getFy() != currPawn.getPath()[nextPosIndexForCurrPlayerPawn].getFy()) {  //jezeli docelowe miejsce puste
 

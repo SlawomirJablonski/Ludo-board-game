@@ -12,11 +12,8 @@ public class Dice {
         this.diceResult = throwResult;
     }
 
-
-
     public int getDiceResult() {
         return diceResult;
     }
-
 
 }

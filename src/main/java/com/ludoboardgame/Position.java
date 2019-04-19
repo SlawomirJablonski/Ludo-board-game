@@ -179,59 +179,61 @@ public class Position {
 
         return redPath;
     }
-    public static Position[] getBluePath3() {
-        Position[] bluePath3 = new Position[45];
-        bluePath3[0] = new Position(0, 1); //home
+    public static Position[] getGreenPath(int homePositionX, int homePositionY) {
+        Position[] greenPath = new Position[45];
+        greenPath[0] = new Position(homePositionX, homePositionY); //home
 
-        bluePath3[1] = new Position(0, 4);//start
-        bluePath3[2] = new Position(1, 4);
-        bluePath3[3] = new Position(2, 4);
-        bluePath3[4] = new Position(3, 4);
-        bluePath3[5] = new Position(4, 4);
-        bluePath3[6] = new Position(4, 3);
-        bluePath3[7] = new Position(4, 2);
-        bluePath3[8] = new Position(4, 1);
-        bluePath3[9] = new Position(4, 0);
-        bluePath3[10] = new Position(5, 0);
-        bluePath3[11] = new Position(6, 0);
-        bluePath3[12] = new Position(6, 1);
-        bluePath3[13] = new Position(6, 2);
-        bluePath3[44] = new Position(6, 3);
-        bluePath3[15] = new Position(6, 4);
-        bluePath3[16] = new Position(7, 4);
-        bluePath3[17] = new Position(8, 4);
-        bluePath3[18] = new Position(9, 4);
-        bluePath3[19] = new Position(10, 4);
-        bluePath3[20] = new Position(10, 5);
-        bluePath3[21] = new Position(10, 6);
-        bluePath3[22] = new Position(9, 6);
-        bluePath3[23] = new Position(8, 6);
-        bluePath3[24] = new Position(7, 6);
-        bluePath3[25] = new Position(6, 6);
-        bluePath3[26] = new Position(6, 7);
-        bluePath3[27] = new Position(6, 8);
-        bluePath3[28] = new Position(6, 9);
-        bluePath3[29] = new Position(6, 10);
-        bluePath3[30] = new Position(5, 10);
+        greenPath[1] = new Position(10, 6);
+        greenPath[2] = new Position(9, 6);
+        greenPath[3] = new Position(8, 6);
+        greenPath[4] = new Position(7, 6);
+        greenPath[5] = new Position(6, 6);
 
-        bluePath3[31] = new Position(4, 10);
-        bluePath3[32] = new Position(4, 9);
-        bluePath3[33] = new Position(4, 8);
-        bluePath3[34] = new Position(4, 7);
-        bluePath3[35] = new Position(4, 6);
-        bluePath3[36] = new Position(3, 6);
-        bluePath3[37] = new Position(2, 6);
-        bluePath3[38] = new Position(1, 6);
-        bluePath3[39] = new Position(0, 6);
-        bluePath3[40] = new Position(0, 5);//last white field
+        greenPath[6] = new Position(6, 7);
+        greenPath[7] = new Position(6, 8);
+        greenPath[8] = new Position(6, 9);
+        greenPath[9] = new Position(6, 10);
+        greenPath[10] = new Position(5, 10);
+        greenPath[11] = new Position(4, 10);
 
-        bluePath3[41] = new Position(1, 5);//finish
-        bluePath3[42] = new Position(2, 5);//finish
-        bluePath3[43] = new Position(3, 5);//finish
-        bluePath3[44] = new Position(4, 5);//finish
+        greenPath[12] = new Position(4, 9);
+        greenPath[13] = new Position(4, 8);
+        greenPath[14] = new Position(4, 7);
+        greenPath[15] = new Position(4, 6);
+        greenPath[16] = new Position(3, 6);
+        greenPath[17] = new Position(2, 6);
+        greenPath[18] = new Position(1, 6);
+        greenPath[19] = new Position(0, 6);
 
-        return bluePath3;
+        greenPath[20] = new Position(0, 5);
+        greenPath[21] = new Position(0, 4);
+        greenPath[22] = new Position(1, 4);
+        greenPath[23] = new Position(2, 4);
+        greenPath[24] = new Position(3, 4);
+        greenPath[25] = new Position(4, 4);
+        greenPath[26] = new Position(4, 3);
+        greenPath[27] = new Position(4, 2);
+        greenPath[28] = new Position(4, 1);
+        greenPath[29] = new Position(4, 0);
+        greenPath[30] = new Position(5, 0);
+
+        greenPath[31] = new Position(6, 0);
+        greenPath[32] = new Position(6, 1);
+        greenPath[33] = new Position(6, 2);
+        greenPath[34] = new Position(6, 3);
+        greenPath[35] = new Position(6, 4);
+
+        greenPath[36] = new Position(7, 4);
+        greenPath[37] = new Position(8, 4);
+        greenPath[38] = new Position(9, 4);
+        greenPath[39] = new Position(10, 4);
+        greenPath[40] = new Position(10, 5);//last white
+
+        greenPath[41] = new Position(9, 5);//finish
+        greenPath[42] = new Position(8, 5);//finish
+        greenPath[43] = new Position(7, 5);//finish
+        greenPath[44] = new Position(6, 5);//finish
+
+        return greenPath;
     }
-
-
 }

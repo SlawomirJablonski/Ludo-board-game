@@ -54,6 +54,9 @@ public class Configuration {
     private ImageView imgPawnBlue4 = new ImageView(pawnBlue);
     private Image pawnRed = new Image("pawnRed2.png");
     private ImageView imgPawnRed1 = new ImageView(pawnRed);
+    private ImageView imgPawnRed2 = new ImageView(pawnRed);
+    private ImageView imgPawnRed3 = new ImageView(pawnRed);
+    private ImageView imgPawnRed4 = new ImageView(pawnRed);
     private Image pawnGreen = new Image("pawnGreen2.png");
     private ImageView imgPawnGreen1 = new ImageView(pawnGreen);
 
@@ -67,31 +70,31 @@ public class Configuration {
     Pawn pawn3b = new Pawn(3, Position.getBluePath(0, 1), pawnBlue, imgPawnBlue3, 10);
     Pawn pawn4b = new Pawn(4, Position.getBluePath(1, 1), pawnBlue, imgPawnBlue4, 10);
 
-/*
 //nieobrobione przyciski !!!
-    Pawn pawn1r = new Pawn(1,new Position(9,0),new Position(6,0),pawnRed,imgPawnRed1,new Position(9,0));
-    Pawn pawn2r = new Pawn(2,new Position(9,0),new Position(6,0),pawnRed,imgPawnRed1,new Position(9,0));
-    Pawn pawn3r = new Pawn(3,new Position(9,0),new Position(6,0),pawnRed,imgPawnRed1,new Position(9,0));
-    Pawn pawn4r = new Pawn(4,new Position(9,0),new Position(6,0),pawnRed,imgPawnRed1,new Position(9,0));
-    Pawn pawn1g = new Pawn(1,new Position(9,9),new Position(10,6),pawnRed,imgPawnRed1,new Position(9,9));
+    Pawn pawn1r = new Pawn(1,Position.getRedPath(9,0),pawnRed,imgPawnRed1,0);
+    Pawn pawn2r = new Pawn(2,Position.getRedPath(10,0),pawnRed,imgPawnRed2,0);
+    Pawn pawn3r = new Pawn(3,Position.getRedPath(9,1),pawnRed,imgPawnRed3,0);
+    Pawn pawn4r = new Pawn(4,Position.getRedPath(10,1),pawnRed,imgPawnRed4,0);
+
+    /*Pawn pawn1g = new Pawn(1,new Position(9,9),new Position(10,6),pawnRed,imgPawnRed1,new Position(9,9));
     Pawn pawn2g = new Pawn(2,new Position(10,9),new Position(10,6),pawnRed,imgPawnRed1,new Position(10,9));
     Pawn pawn3g = new Pawn(3,new Position(9,10),new Position(10,6),pawnRed,imgPawnRed1,new Position(9,10));
-    Pawn pawn4g = new Pawn(4,new Position(10,10),new Position(10,6),pawnRed,imgPawnRed1,new Position(10,10));
-*/
+    Pawn pawn4g = new Pawn(4,new Position(10,10),new Position(10,6),pawnRed,imgPawnRed1,new Position(10,10));*/
 
     int playerIndex = 0;
 
     Player player1 = new Player("Payer1", "yellow", pawn1y, pawn2y, pawn3y, pawn4y);
     Player player2 = new Player("Payer2", "blue", pawn1b, pawn2b, pawn3b, pawn4b);
+    Player player3 = new Player("Payer3", "red", pawn1r, pawn2r, pawn3r, pawn4r);
 
-    /*  Player player3 = new Player("Payer3","red",pawn1r,pawn2r,pawn3r,pawn4r);
+    /*
       Player player4 = new Player("Payer4","green",pawn1g,pawn2g,pawn3g,pawn4g);
   */
     public final Player[] getPlayers() {
-        Player[] players = new Player[2];
+        Player[] players = new Player[3];
         players[0] = player1;
         players[1] = player2;
-        //players[2]=player3;
+        players[2] = player3;
         //players[3]=player4;
         return players;
     }
