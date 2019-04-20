@@ -11,21 +11,16 @@ public class Pawn {
     private ImageView imgPawn = new ImageView(pawnImage);
     private int currentPosIndex = 0;
     private Position[] path;
-    private int offset;
+
 
     private int pawnFinalPosIndex;
 
-    public Pawn(int pawnIndex, Position[] path, Image pawnImage, ImageView imgPawn, int offset) {
+    public Pawn(int pawnIndex, Position[] path, Image pawnImage, ImageView imgPawn) {
         this.pawnIndex = pawnIndex;
         this.homePosition = path[0];
         this.path = path;
         this.pawnImage = pawnImage;
         this.imgPawn = imgPawn;
-        this.offset = offset;
-    }
-
-    public int getOffset() {
-        return offset;
     }
 
     public Position getHomePosition() {
@@ -44,10 +39,6 @@ public class Pawn {
         return pawnImage;
     }
 
-    public void setPawnImage(Image pawnImage) {
-        this.pawnImage = pawnImage;
-    }
-
     public ImageView getImgPawn() {
         return imgPawn;
     }
@@ -61,10 +52,7 @@ public class Pawn {
         return path[++currentPosIndex];
         //return path[1];
     }
-    public Position getLastPosition() {
-        return path[++currentPosIndex];
-        //return path[1];
-    }
+
 
     public Position getCurrentPosition(){
         return path[currentPosIndex];
@@ -87,11 +75,5 @@ public class Pawn {
 
     public int getNextPosIndex(int diceResult){return currentPosIndex+diceResult;}
 
-    public int getPawnFinalPosIndex() {
-        return pawnFinalPosIndex;
-    }
 
-    public void setPawnFinalPosIndex(int pawnFinalPosIndex) {
-        this.pawnFinalPosIndex = pawnFinalPosIndex;
-    }
 }
