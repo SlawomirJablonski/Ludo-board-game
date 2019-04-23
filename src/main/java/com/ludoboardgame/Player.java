@@ -1,8 +1,8 @@
 package com.ludoboardgame;
 
 public class Player {
-    private String playerName = "";
-    private String playerColor = "";
+    private String playerName;
+    private String playerColor;
 
     private int currentPawn = 0;
     private Pawn[] pawns;
@@ -21,6 +21,10 @@ public class Player {
         return playerName;
     }
 
+    public String getPlayerColor() {
+        return playerColor;
+    }
+
     public void setPlayerName(String playerName) {
         this.playerName = playerName;
     }
@@ -29,8 +33,4 @@ public class Player {
         return pawns[currentPawn];
     }
 
-    public Pawn getNextPawn() {
-        return pawns[currentPawn++];
-        //return path[1];
-    }
 }

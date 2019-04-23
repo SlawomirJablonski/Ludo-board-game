@@ -2,7 +2,6 @@ package com.ludoboardgame;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
 
 public class Pawn {
     private int pawnIndex;
@@ -12,8 +11,6 @@ public class Pawn {
     private int currentPosIndex = 0;
     private Position[] path;
 
-
-    private int pawnFinalPosIndex;
 
     public Pawn(int pawnIndex, Position[] path, Image pawnImage, ImageView imgPawn) {
         this.pawnIndex = pawnIndex;
@@ -47,12 +44,9 @@ public class Pawn {
         this.currentPosIndex = currentPosIndex;
     }
 
-
     public Position getNextPosition() {
         return path[++currentPosIndex];
-        //return path[1];
     }
-
 
     public Position getCurrentPosition(){
         return path[currentPosIndex];
@@ -63,17 +57,8 @@ public class Pawn {
     }
 
     public Position getNextPositionBehindHome(int diceResult){
-        //return path[currentPosIndex+diceResult];
         currentPosIndex=currentPosIndex+diceResult;
         return path[currentPosIndex];
     }
-    public Position getFinishPosition(int diceResult){
-        return path[currentPosIndex+diceResult];
-        //currentPosIndex=currentPosIndex+diceResult;
-        //return path[currentPosIndex];
-    }
-
-    public int getNextPosIndex(int diceResult){return currentPosIndex+diceResult;}
-
 
 }

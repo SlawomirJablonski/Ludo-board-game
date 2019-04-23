@@ -3,10 +3,6 @@ package com.ludoboardgame;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
 public class Configuration {
 
     private PlayersQuantity playersQuantity;
@@ -60,6 +56,8 @@ public class Configuration {
     private Image pawnGreen = new Image("pawnGreen2.png");
     private ImageView imgPawnGreen1 = new ImageView(pawnGreen);
 
+    Pawn pawn0 = new Pawn(1, Position.getYellowPath(5, 5), pawnPurple, imgPawnPurple1);
+
     Pawn pawn1y = new Pawn(1, Position.getYellowPath(0, 9), pawnPurple, imgPawnPurple1);
     Pawn pawn2y = new Pawn(2, Position.getYellowPath(1, 9), pawnPurple, imgPawnPurple2);
     Pawn pawn3y = new Pawn(3, Position.getYellowPath(0, 10), pawnPurple, imgPawnPurple3);
@@ -112,21 +110,9 @@ public class Configuration {
 
     }
 
-    public Player getNextPlayer() {
-        if (playerIndex==0){
-            return getPlayers()[1];
-        } else {
-            return getPlayers()[0];
-        }
-        /*if(currentPlayer==player1) {
-            return player2;
-        } else return player1;*/
-    }
-
     public Player getPlayer1() {
         return player1;
     }
-
 
     public void incrementThrowsCounter() {
         throwsCounter++;

@@ -325,76 +325,6 @@ public class Ludoboardgame extends Application {
     }
 
 
-    //spr czy pozycja docelowa pusta
-    public boolean isDocelowaNaScieżcePusta(Pawn pawn, int dice) {
-
-        boolean result = false;
-
-        List<Pawn> otherPawns = Arrays.stream(configuration.getPlayers())
-                .flatMap(player -> Arrays.stream(player.getPawns()))
-                .filter(p -> p != pawn)
-                .collect(toList());
-
-        for (Pawn otherPawn : otherPawns) {
-
-            int pawnNextPosIndex = pawn.getCurrentPosIndex() + dice;
-            if (pawnNextPosIndex < 45) {
-                Position pawnNextPos = pawn.getPath()[pawnNextPosIndex];
-                int pawnNextX = pawnNextPos.getFx();
-                int pawnNextY = pawnNextPos.getFy();
-                int oponentCurX = otherPawn.getCurrentPosition().getFx();
-                int oponentCurY = otherPawn.getCurrentPosition().getFx();
-
-                if (pawnNextX != oponentCurX && pawnNextY != oponentCurY) {
-                    result = true;
-                }
-
-            }
-        }
-        return result;
-    }
-
-    public void moveWhenEmpty(Pawn pawn, int dice) {
-        Position nextPositionBH = pawn.getNextPositionBehindHome(dice);
-        GridPane.setConstraints(pawn.getImgPawn(),
-                nextPositionBH.getFx(),
-                nextPositionBH.getFy());
-    }
-
-    public void sendOpponetToHome(Pawn pawn, int dice) {
-
-        Pawn oponent = null;
-
-        List<Pawn> otherPawns = Arrays.stream(configuration.getPlayers())
-                .flatMap(player -> Arrays.stream(player.getPawns()))
-                .filter(p -> p != pawn)
-                .collect(toList());
-
-        for (Pawn otherPawn : otherPawns) {
-
-            int pawnNextPosIndex = pawn.getCurrentPosIndex() + dice;
-            if (pawnNextPosIndex < 45) {
-                Position pawnNextPos = pawn.getPath()[pawnNextPosIndex];
-                int pawnNextX = pawnNextPos.getFx();
-                int pawnNextY = pawnNextPos.getFy();
-                int oponentCurX = otherPawn.getCurrentPosition().getFx();
-                int oponentCurY = otherPawn.getCurrentPosition().getFx();
-
-                if (pawnNextX == oponentCurX && pawnNextY == oponentCurY) {
-                    oponent = otherPawn;
-                }
-            }
-
-        }
-        if (oponent != null) {
-            GridPane.setConstraints(oponent.getImgPawn(),
-                    oponent.getHomePosition().getFx(),
-                    oponent.getHomePosition().getFy());
-        }
-
-    }
-
-
     public void drawThrowButton(Pane pane) {
         curPlayerLabel.setText("Rzut kością dla gracza " + configuration.getCurrentPlayer().getPlayerName() + "  -->");
         curPlayerLabel.relocate(350, 118);
@@ -406,58 +336,97 @@ public class Ludoboardgame extends Application {
 
             configuration.incrementThrowsCounter();
             drawDiceAfterThrow(pane);
+
             System.out.println("checking: currentPlayer: " + configuration.getCurrentPlayer().getPlayerName());
 
             int currentDiceResult = dice.getDiceResult();
-            Pawn currPlayerPawn = configuration.getCurrentPlayer().getCurrentPawn();
-            Position posForNextPlayer = configuration.getNextPlayerCurrPawnPos();
-            int nextPosIndexForCurrPlayerPawn = currPlayerPawn.getNextPosIndex(currentDiceResult);
-            int currPlayerPawnIndex = currPlayerPawn.getPawnIndex();
+
 
             List<Pawn> currPlayerHomePawns = Arrays.stream(configuration.getCurrentPlayer().getPawns())
-                    .filter(pawn -> pawn.getCurrentPosIndex()==0)
+                    .filter(pawn -> pawn.getCurrentPosIndex() == 0)
+                    .collect(toList());
+
+
+            List<Pawn> currPlayerInTargetPawns = Arrays.stream(configuration.getCurrentPlayer().getPawns())
+                    .filter(pawn -> pawn.getCurrentPosIndex() > 40 && pawn.getCurrentPosIndex() < 45)
+                    .collect(toList());
+
+
+            String color = configuration.getCurrentPlayer().getPlayerColor();
+
+            List<Pawn> opponentsOnPath = Arrays.stream(configuration.getPlayers())
+                    .filter(player -> !player.getPlayerColor().equals(color))
+                    .flatMap(player -> Arrays.stream(player.getPawns()))
+                    .filter(pawn -> pawn.getCurrentPosIndex() > 0 && pawn.getCurrentPosIndex() < 41)
                     .collect(toList());
 
             List<Pawn> currPlayerOnPathPawns = Arrays.stream(configuration.getCurrentPlayer().getPawns())
-                    .filter(pawn -> pawn.getCurrentPosIndex()>0 && pawn.getCurrentPosIndex()<41)
-                    .collect(toList());
-
-            List<Pawn> currPlayerInTargetPawns = Arrays.stream(configuration.getCurrentPlayer().getPawns())
-                    .filter(pawn -> pawn.getCurrentPosIndex()>40 && pawn.getCurrentPosIndex()<45)
-                    .collect(toList());
-
-            Image currPawnImage = currPlayerPawn.getPawnImage();
-
-            List<Pawn> opponentPawns = Arrays.stream(configuration.getPlayers())
-                    .flatMap(player -> Arrays.stream(player.getPawns()))
-                    .filter(pawn -> pawn.getPawnImage()!=currPawnImage)
+                    .filter(pawn -> pawn.getCurrentPosIndex() > 0 && pawn.getCurrentPosIndex() < 41)
                     .collect(toList());
 
 
-            if (currPlayerHomePawns.size()+currPlayerInTargetPawns.size()==4) {
+
+            if (currPlayerHomePawns.size() + currPlayerInTargetPawns.size() == 4) {
+
                 Pawn currPawn = currPlayerHomePawns.get(0);
+                int curI = currPawn.getCurrentPosIndex();
+                int nextX = currPawn.getPath()[curI + 1].getFx();
+                int nextY = currPawn.getPath()[curI + 1].getFy();
+
                 if (dice.getDiceResult() == 6) {
-                    for (Pawn oponnent:opponentPawns) {
-                        if (oponnent.getCurrentPosition() != currPawn.getPath()[1]) {  //jezeli docelowe miejsce puste
 
-                            System.out.println("dla next x " + posForNextPlayer.getFx() + ", y " + posForNextPlayer.getFy());
-                            moveCurrentPlayerToNextPosition(currPawn);
-                            finishCurrentPlayerMove();
-                            curPlayerLabel.setText("Rzut kością dla gracza " + configuration.getCurrentPlayer().getPlayerName() + "  -->");
-                            return;
+                    if (opponentsOnPath.size() == 0) {
+                        moveCurrentPlayerToNextPosition(currPawn);
+                        finishCurrentPlayerMove();
+                        curPlayerLabel.setText("Rzut kością dla gracza " + configuration.getCurrentPlayer().getPlayerName() + "  -->");
+                        return;
+                    }
+                    if (opponentsOnPath.size() == 1 &&
+                            opponentsOnPath.get(0).getCurrentPosition().getFx() != nextX &&
+                            opponentsOnPath.get(0).getCurrentPosition().getFy() != nextY) {
+                        moveCurrentPlayerToNextPosition(currPawn);
+                        finishCurrentPlayerMove();
+                        curPlayerLabel.setText("Rzut kością dla gracza " + configuration.getCurrentPlayer().getPlayerName() + "  -->");
+                        return;
+                    }
+                    if (opponentsOnPath.size() == 2 &&
+                            opponentsOnPath.get(0).getCurrentPosition().getFx() != nextX &&
+                            opponentsOnPath.get(0).getCurrentPosition().getFy() != nextY &&
+                            opponentsOnPath.get(1).getCurrentPosition().getFx() != nextX &&
+                            opponentsOnPath.get(1).getCurrentPosition().getFy() != nextY) {
+                        moveCurrentPlayerToNextPosition(currPawn);
+                        finishCurrentPlayerMove();
+                        curPlayerLabel.setText("Rzut kością dla gracza " + configuration.getCurrentPlayer().getPlayerName() + "  -->");
+                        return;
+                    }
 
-                        }
+                    if (opponentsOnPath.size() == 1 &&
+                            opponentsOnPath.get(0).getCurrentPosition().getFx() == nextX &&
+                            opponentsOnPath.get(0).getCurrentPosition().getFy() == nextY) {
+                        moveOpponentToHome(opponentsOnPath.get(0));
+                        moveCurrentPlayerToNextPosition(currPawn);
+                        finishCurrentPlayerMove();
+                        curPlayerLabel.setText("Rzut kością dla gracza " + configuration.getCurrentPlayer().getPlayerName() + "  -->");
+                        return;
+                    }
 
-                        if (oponnent.getCurrentPosition() == currPawn.getPath()[1]) { //jezeli docelowe miejsce zajęte
-
-                            System.out.println("spełniono warunek zbicia xxxxxxxxxxxxxxxxxxxx");
-                            moveOpponentToHome(oponnent);
-                            moveCurrentPlayerToNextPosition(currPawn);
-                            finishCurrentPlayerMove();
-                            curPlayerLabel.setText("Rzut kością dla gracza " + configuration.getCurrentPlayer().getPlayerName() + "  -->");
-                            return;
-
-                        }
+                    if (opponentsOnPath.size() == 2 &&
+                            opponentsOnPath.get(0).getCurrentPosition().getFx() == nextX &&
+                            opponentsOnPath.get(0).getCurrentPosition().getFy() == nextY) {
+                        moveOpponentToHome(opponentsOnPath.get(0));
+                        moveCurrentPlayerToNextPosition(currPawn);
+                        finishCurrentPlayerMove();
+                        curPlayerLabel.setText("Rzut kością dla gracza " + configuration.getCurrentPlayer().getPlayerName() + "  -->");
+                        return;
+                    }
+                    if (opponentsOnPath.size() == 2 &&
+                            opponentsOnPath.get(1).getCurrentPosition().getFx() == nextX &&
+                            opponentsOnPath.get(1).getCurrentPosition().getFy() == nextY) {
+                        moveOpponentToHome(opponentsOnPath.get(1));
+                        moveCurrentPlayerToNextPosition(currPawn);
+                        finishCurrentPlayerMove();
+                        curPlayerLabel.setText("Rzut kością dla gracza " + configuration.getCurrentPlayer().getPlayerName() + "  -->");
+                        return;
                     }
                 }
 
@@ -467,105 +436,131 @@ public class Ludoboardgame extends Application {
                 }
             }
 
-            if (currPlayerOnPathPawns.size()==1) {  //pierwszy pionek wyjechał z bazy
+
+            if (currPlayerOnPathPawns.size() == 1) {  //pierwszy pionek wyjechał z bazy
+
                 Pawn currPawn = currPlayerOnPathPawns.get(0);
+                int curI = currPawn.getCurrentPosIndex();
 
+                int currPlayerPawnIndex = currPawn.getPawnIndex();
+                int nextPosIndexForCurrPlayerPawn = currPawn.getCurrentPosIndex()+ currentDiceResult;
 
-                if (currPawn.getCurrentPosIndex()+currentDiceResult < 41) {  //przed wjazdem na pola finish
-                    for (Pawn oponent:opponentPawns) {
-                        int a = opponentPawns.size();
-                        System.out.println(a);
-                        if (oponent.getCurrentPosition().getFx() != currPawn.getPath()[nextPosIndexForCurrPlayerPawn].getFx() &&
-                                oponent.getCurrentPosition().getFy() != currPawn.getPath()[nextPosIndexForCurrPlayerPawn].getFy()) {  //jezeli docelowe miejsce puste
+                if (currPawn.getCurrentPosIndex() + currentDiceResult < 41) {  //przed wjazdem na pola finish
 
-                            moveCurrentPlayerToNextPositionBehindHome(currentDiceResult,currPawn);
-                            finishCurrentPlayerMove();
-                            curPlayerLabel.setText("Rzut kością dla gracza " + configuration.getCurrentPlayer().getPlayerName() + "  -->");
-                            return;
-                        }
+                    int nextX = currPawn.getPath()[curI + dice.getDiceResult()].getFx();
+                    int nextY = currPawn.getPath()[curI + dice.getDiceResult()].getFy();
 
-                        if (oponent.getCurrentPosition().getFx() == currPawn.getPath()[nextPosIndexForCurrPlayerPawn].getFx() &&
-                                oponent.getCurrentPosition().getFy() == currPawn.getPath()[nextPosIndexForCurrPlayerPawn].getFy()) {  //jezeli docelowe miejsce zajete if (posForNextPlayer == currPlayerPawn.getPath()[nextPosIndexForCurrPlayerPawn])
+                    if (opponentsOnPath.size() == 0) {  //jezeli docelowe miejsce puste
 
-                            System.out.println("curr x:"+currPlayerPawn.getCurrentPosition().getFx()+", y:"+currPlayerPawn.getCurrentPosition().getFy());
-                            System.out.println("opponent x:"+posForNextPlayer.getFx()+", y:"+posForNextPlayer.getFy());
-                            System.out.println("spełniono warunek zbicia xxxxxxxxxxxxxxxxxxxx");
-                            moveOpponentToHome(oponent);
-                            moveCurrentPlayerToNextPositionBehindHome(currentDiceResult,currPawn);
-                            finishCurrentPlayerMove();
-                            curPlayerLabel.setText("Rzut kością dla gracza " + configuration.getCurrentPlayer().getPlayerName() + "  -->");
-
-                            return;
-                        }
-                    }
-                }
-
-                if (nextPosIndexForCurrPlayerPawn < 45) {  //wjechnie na pola finish
-
-                    if (currPlayerPawnIndex == 1) {
-
-                        moveCurrentPlayerToNextPositionBehindHome(currentDiceResult,currPawn);
-                        configuration.getCurrentPlayer().getNextPawn();
+                        moveCurrentPlayerToNextPositionBehindHome(currentDiceResult);
                         finishCurrentPlayerMove();
                         curPlayerLabel.setText("Rzut kością dla gracza " + configuration.getCurrentPlayer().getPlayerName() + "  -->");
                         return;
+                    }
+                    if (opponentsOnPath.size() == 1 &&
+                            opponentsOnPath.get(0).getCurrentPosition().getFx() != nextX &&
+                            opponentsOnPath.get(0).getCurrentPosition().getFy() != nextY) {  //jezeli docelowe miejsce puste
 
+                        moveCurrentPlayerToNextPositionBehindHome(currentDiceResult);
+                        finishCurrentPlayerMove();
+                        curPlayerLabel.setText("Rzut kością dla gracza " + configuration.getCurrentPlayer().getPlayerName() + "  -->");
+                        return;
+                    }
+                    if (opponentsOnPath.size() == 2 &&
+                            opponentsOnPath.get(0).getCurrentPosition().getFx() != nextX &&
+                            opponentsOnPath.get(0).getCurrentPosition().getFy() != nextY &&
+                            opponentsOnPath.get(1).getCurrentPosition().getFx() != nextX &&
+                            opponentsOnPath.get(1).getCurrentPosition().getFy() != nextY) {  //jezeli docelowe miejsce puste
+
+                        moveCurrentPlayerToNextPositionBehindHome(currentDiceResult);
+                        finishCurrentPlayerMove();
+                        curPlayerLabel.setText("Rzut kością dla gracza " + configuration.getCurrentPlayer().getPlayerName() + "  -->");
+                        return;
+                    }
+
+                    if (opponentsOnPath.size() == 1 &&
+                            opponentsOnPath.get(0).getCurrentPosition().getFx() == nextX &&
+                            opponentsOnPath.get(0).getCurrentPosition().getFy() == nextY) {  //jezeli docelowe miejsce zajete if (posForNextPlayer == currPlayerPawn.getPath()[nextPosIndexForCurrPlayerPawn])
+
+                        moveOpponentToHome(opponentsOnPath.get(0));
+                        moveCurrentPlayerToNextPositionBehindHome(currentDiceResult);
+                        finishCurrentPlayerMove();
+                        curPlayerLabel.setText("Rzut kością dla gracza " + configuration.getCurrentPlayer().getPlayerName() + "  -->");
+
+                        return;
+                    }
+                    if (opponentsOnPath.size() == 2 &&
+                            opponentsOnPath.get(0).getCurrentPosition().getFx() == nextX &&
+                            opponentsOnPath.get(0).getCurrentPosition().getFy() == nextY) {  //jezeli docelowe miejsce zajete if (posForNextPlayer == currPlayerPawn.getPath()[nextPosIndexForCurrPlayerPawn])
+
+                        moveOpponentToHome(opponentsOnPath.get(0));
+                        moveCurrentPlayerToNextPositionBehindHome(currentDiceResult);
+                        finishCurrentPlayerMove();
+                        curPlayerLabel.setText("Rzut kością dla gracza " + configuration.getCurrentPlayer().getPlayerName() + "  -->");
+                        return;
+                    }
+                    if (opponentsOnPath.size() == 2 &&
+                            opponentsOnPath.get(1).getCurrentPosition().getFx() == nextX &&
+                            opponentsOnPath.get(1).getCurrentPosition().getFy() == nextY) {  //jezeli docelowe miejsce zajete if (posForNextPlayer == currPlayerPawn.getPath()[nextPosIndexForCurrPlayerPawn])
+
+                        moveOpponentToHome(opponentsOnPath.get(1));
+                        moveCurrentPlayerToNextPositionBehindHome(currentDiceResult);
+                        finishCurrentPlayerMove();
+                        curPlayerLabel.setText("Rzut kością dla gracza " + configuration.getCurrentPlayer().getPlayerName() + "  -->");
+                        return;
+                    }
+                }
+
+                if (currPawn.getCurrentPosIndex() + currentDiceResult > 40 && currPawn.getCurrentPosIndex() + currentDiceResult < 45) {  //wjechnie na pola finish // zmiany
+
+                    if (currPlayerPawnIndex == 1) {
+
+                        moveCurrentPlayerToNextPositionBehindHome(currentDiceResult);
+                        finishCurrentPlayerMove();
+                        curPlayerLabel.setText("Rzut kością dla gracza " + configuration.getCurrentPlayer().getPlayerName() + "  -->");
+                        return;
                     }
 
                     if (currPlayerPawnIndex == 2) {
 
                         if (nextPosIndexForCurrPlayerPawn != configuration.getCurrentPlayer().getPawns()[0].getCurrentPosIndex()) {
 
-                            moveCurrentPlayerToNextPositionBehindHome(currentDiceResult,currPawn);
-                            configuration.getCurrentPlayer().getNextPawn();
+                            moveCurrentPlayerToNextPositionBehindHome(currentDiceResult);
                             finishCurrentPlayerMove();
                             curPlayerLabel.setText("Rzut kością dla gracza " + configuration.getCurrentPlayer().getPlayerName() + "  -->");
                             return;
-
                         }
-
                     }
 
                     if (currPlayerPawnIndex == 3) {
 
                         if (nextPosIndexForCurrPlayerPawn != configuration.getCurrentPlayer().getPawns()[0].getCurrentPosIndex() &&
-
                                 nextPosIndexForCurrPlayerPawn != configuration.getCurrentPlayer().getPawns()[1].getCurrentPosIndex()) {
 
-                            moveCurrentPlayerToNextPositionBehindHome(currentDiceResult,currPawn);
-                            configuration.getCurrentPlayer().getNextPawn();
+                            moveCurrentPlayerToNextPositionBehindHome(currentDiceResult);
                             finishCurrentPlayerMove();
                             curPlayerLabel.setText("Rzut kością dla gracza " + configuration.getCurrentPlayer().getPlayerName() + "  -->");
-
                             return;
-
                         }
-
                     }
 
                     if (currPlayerPawnIndex == 4) {
-
+                        System.out.println(currPlayerPawnIndex);
 
                         if (nextPosIndexForCurrPlayerPawn != configuration.getCurrentPlayer().getPawns()[0].getCurrentPosIndex() &&
-
                                 nextPosIndexForCurrPlayerPawn != configuration.getCurrentPlayer().getPawns()[1].getCurrentPosIndex() &&
-
                                 nextPosIndexForCurrPlayerPawn != configuration.getCurrentPlayer().getPawns()[2].getCurrentPosIndex()) {
 
-                            System.out.println("spelniono warunek b----------------------------------------");
-
-                            moveCurrentPlayerToNextPositionBehindHome(currentDiceResult,currPawn);
+                            moveCurrentPlayerToNextPositionBehindHome(currentDiceResult);
 
                             winLabel.setText("GRATULACJE !  Gracz " + configuration.getCurrentPlayer().getPlayerName() + " wygrał grę! Zapraszamy do ponownej gry...");
                             winLabel.relocate(250, 143);
                             Rectangle rect = new Rectangle(640, 100, 150, 60);
                             rect.setFill(Color.WHITE);
-                            pane.getChildren().addAll(winLabel,rect);
+                            pane.getChildren().addAll(winLabel, rect);
                             pane.getChildren().removeAll(curPlayerLabel, throwBtn);
-
                         }
                     }
-
                 }
 
                 if (configuration.getThrowsCounter() == 1) {
@@ -620,7 +615,6 @@ public class Ludoboardgame extends Application {
     }
 
     private void moveCurrentPlayerToNextPosition(Pawn pawn) {
-        //Pawn currPlayerPawn = configuration.getCurrentPlayer().getCurrentPawn();
         System.out.println("Moving player " + configuration.getCurrentPlayer().getPlayerName() + "to next position.");
 
         Position nextPosition = pawn.getNextPosition();
@@ -629,17 +623,17 @@ public class Ludoboardgame extends Application {
                 nextPosition.getFy());
     }
 
-    private void moveCurrentPlayerToNextPositionBehindHome(int diceResult, Pawn pawn) {
+    private void moveCurrentPlayerToNextPositionBehindHome(int diceResult) {
+        List<Pawn> list = Arrays.stream(configuration.getCurrentPlayer().getPawns()).filter(pawn -> pawn.getCurrentPosIndex() > 0 && pawn.getCurrentPosIndex() < 41).collect(toList());
+        Pawn curPawn = list.get(0);
         System.out.println("Moving player " + configuration.getCurrentPlayer().getPlayerName() + " to next position.");
-        Position nextPositionBH = pawn.getNextPositionBehindHome(diceResult);
-        GridPane.setConstraints(pawn.getImgPawn(),
+        Position nextPositionBH = curPawn.getNextPositionBehindHome(diceResult);
+        GridPane.setConstraints(curPawn.getImgPawn(),
                 nextPositionBH.getFx(),
                 nextPositionBH.getFy());
     }
 
     private void moveOpponentToHome(Pawn pawn) {
-
-        Player secondPlayer = configuration.getNextPlayer();
         pawn.setCurrentPosIndex(0);
         GridPane.setConstraints(pawn.getImgPawn(), pawn.getHomePosition().getFx(), pawn.getHomePosition().getFy());
     }
