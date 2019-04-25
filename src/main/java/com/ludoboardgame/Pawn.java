@@ -57,7 +57,7 @@ public class Pawn {
     }
 
     public Position getNextPositionBehindHome(int diceResult){
-        currentPosIndex=currentPosIndex+diceResult;
+        currentPosIndex=diceResult+currentPosIndex;
         return path[currentPosIndex];
     }
 
